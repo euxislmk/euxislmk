@@ -215,7 +215,7 @@ function fbad(prefix, postfix, divId, appId, plcmId, format, fbadCSS, fbadHTML) 
 			FB.Event.subscribe(
 				'ad.loaded',
 				function(placementId) {
-					console.log('Audience Network ad loaded');
+					// console.log('Audience Network ad loaded');
 					if (format == "native") {
 						document.getElementById('ad_root').style.display = 'block';
 					}
@@ -224,7 +224,7 @@ function fbad(prefix, postfix, divId, appId, plcmId, format, fbadCSS, fbadHTML) 
 			FB.Event.subscribe(
 				'ad.error',
 				function(errorCode, errorMessage, placementId) {
-					console.log('Audience Network error (' + errorCode + ') ' + errorMessage);
+					// console.log('Audience Network error (' + errorCode + ') ' + errorMessage);
 				}
 			);
 		};
@@ -319,7 +319,7 @@ function epnSmPl(divId, adID, kw = "", categ = "", divWidth = 300, divHeight = d
 					'');
 			});
 		} catch (e) {
-			console.log('no epnSmPl');
+			// console.log('no epnSmPl');
 		}
 	}
 }
@@ -376,7 +376,7 @@ function epnRs(gasID, country, kw, divId, cmpId, rand, numItems, rows, cols, ite
 	// rand = "rand" to randomize, intNumItems = numOfitmes 
 	// req tablify(), jquery 
 	if (document.getElementById(divId)) {
-		console.log(country);
+		// console.log(country);
 		var div = document.getElementById(divId);
 		var geo = (country == "") ? '' : '&availableTo=' + country;
 		try {
@@ -444,7 +444,7 @@ function epnRs(gasID, country, kw, divId, cmpId, rand, numItems, rows, cols, ite
 				}
 			});
 		} catch (e) {
-			console.log('no feed');
+			// console.log('no feed');
 		}
 	}
 	///// helper func ////
@@ -460,13 +460,29 @@ function epnRs(gasID, country, kw, divId, cmpId, rand, numItems, rows, cols, ite
 	//////
 }
 
-function amzNtv_sync(ad_mode, design, search_phrase, tracking_id, linkid, title, default_category) {
-	// v2
+// -- amzAdKW 1/3 (in main script)
+function amzAdKW(div, arr_amzNtv_sync_options) {
+	// v4
+	// req /c/ dynamic catcher, amzNtv_sync(), jq, iframeResizer.min.js
+
+	var arr_amzNtv_sync_options = encodeURIComponent(JSON.stringify(arr_amzNtv_sync_options));
+	$('#' + div).html(
+		'<iframe onload="iFrameResize()" class="iframeresize_class" style="display:block;width:99%" src="https://' + thsBlg_dyn_catcher + '?s=amz&a=' + arr_amzNtv_sync_options + '"  scrolling="no" frameborder="0" border="0" ></iframe>' +
+		''
+	);
+	$.getScript("https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.14/iframeResizer.min.js").done(function() {
+		$('.iframeresize_class').iFrameResize();
+	});
+}
+// -- amzAdKW 1/3 (in main script)
+function amzNtv_sync(ad_mode, design, numRows, search_phrase, tracking_id, linkid, title, default_category) {
+	// v4
 	// ad_mode: "search"||"";
 	// design: "text_links"||"grid";
 	// 
 	var adMode = (ad_mode === '') ? 'search' : ad_mode;
-	var adDesign = (design == 'text_links') ? 'amzn_assoc_rows = "4"; amzn_assoc_design = "text_links";' : 'amzn_assoc_enable_interest_ads = "true";';
+	var numRows = (numRows === '') ? "5" : numRows;
+	var adDesign = (design == 'text_links') ? 'amzn_assoc_rows = "' + numRows + '"; amzn_assoc_design = "text_links";' : 'amzn_assoc_enable_interest_ads = "true";';
 	var adCategory = (default_category === '') ? 'All' : default_category;
 	// 
 	document.write(
@@ -490,15 +506,21 @@ function amzNtv_sync(ad_mode, design, search_phrase, tracking_id, linkid, title,
 		'');
 }
 
-function amzFromLbls(keywords, div) {
-	// v2
-	// req iframeResizer.min.js
-	$('#' + div).html(
-		'<iframe class="iframeresize_class" style="display:block;width:99%" src="https://' + thsBlg_dyn_catcher + '?s=amz&a=' + keywords + '" scrolling="no" frameborder="0" border="0" ></iframe>' +
-		// '<iframe style="height:450px;width:' + (!detectmob() ? '400' : '200') + 'px;overflow:hidden;display:block" src="https://'+thsBlg_dyn_catcher+'?s=amz&a=' + keywords + '" scrolling="no" frameborder="0" border="0" ></iframe>' +
-		''
-	);
-	// 
+function amzFromLbls(keywords, div, type) {
+	// v3 
+	if (typeof type == "undefined") {
+		var type = "grid";
+	}
+	amzAdKW(div, [
+		"search",
+		type, // "text_links"||"grid"
+		"3", // num of rows if text_links above, eg "3" (def:"5")
+		keywords, // search phrase
+		thsBlg_amz.com, // aff id
+		'064830' + '62a' + '172ded549d69' + 'e' + '1886790a34', // link id (def or create new in dashboard)
+		"", // title (def: blank)
+		"" // category (def: All)
+	]);
 }
 
 function affLocalize(objAmAffIds, strEPNId) {
@@ -1076,18 +1098,12 @@ if (thsSiteTyp == "store") {
 /////////////////    DYN_CATCHER   ///////////////////
 // 
 if (thsSiteTyp == "dyn_catcher") {
-	var keywords = (qs.contains("a")) ? qs.get("a") : 'finance money';
-	keywords = decodeURIComponent(keywords);
+	// -- amzAdKW 1/3 (in main script)
 	if (qs.get("s") == "amz") {
-		amzNtv_sync(
-			'search', // ad_mode, 
-			'grid', // design,  "text_links"||"grid"
-			keywords, // search_phrase, 
-			thsBlg_amz.com, // tracking_id, 
-			'06483062a172ded549d69e1886790a34', // linkid, 
-			'', // title, 
-			'' // default_category
-		);
+
+		var a = JSON.parse(decodeURIComponent(qs.get("a")));
+
+		amzNtv_sync(a[0], a[1], a[2], a[3], a[4], a[5], a[6]);
 		$.getScript("https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.14/iframeResizer.contentWindow.min.js")
 			.done(function() {});
 	}
@@ -1104,8 +1120,8 @@ $(window).on("load", function() {
 	// NEWS ITEMPAGE aff 1/1 
 	if (thsSiteTyp == "news") {
 		if (ThsBlg_pg == 'itempage') {
-			var qry4Aff = $('h1').text().replace(/\s+/, " ").replace(/([^\:]*)\:.*/igm, "$1").trim() || 'finance,money';
-			$('#sidebar_rec').html('<iframe style="height:600px;width:99%;overflow:hidden;display:block" src="https://www.financializer.com/c/?s=amz&a=' + encodeURIComponent(qry4Aff) + '" scrolling="no" frameborder="0" border="0" ></iframe></div>');
+			// var qry4Aff = $('h1').text().replace(/\s+/, " ").replace(/([^\:]*)\:.*/igm, "$1").trim() || 'finance,money';
+			// $('#sidebar_rec').html('<iframe style="height:600px;width:99%;overflow:hidden;display:block" src="https://www.financializer.com/c/?s=amz&a=' + encodeURIComponent(qry4Aff) + '" scrolling="no" frameborder="0" border="0" ></iframe></div>');
 		}
 	}
 	// 
@@ -1123,7 +1139,7 @@ $(window).on("load", function() {
 			// ---AFF FROM LABLES
 			$('.blogger-labels').before('<hr/><h4>If you liked it, ALSO TRY:</h4><hr/><div  class="ldng_16_3x"  id="ebRSBtm_1"></div><hr/><div class="ldng_16_3x"  id="ebRSBtm_2"></div><hr/>');
 			var kw = $('.blogger-labels').text().replace(/\s+/igm, " ").trim().replace(/(labels\:)/igm, "").trim();
-			console.log(kw);
+			// console.log(kw);
 			if ($('.postbody h3 a').attr('href').match(/amazon\./)) {
 				kw = encodeURIComponent(kw.replace(/, /g, " ").trim());
 				epnFromLbls(kw, "ebRSBtm_1");
