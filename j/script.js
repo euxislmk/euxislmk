@@ -32,7 +32,7 @@ thsBlg_amz = {
 	'def_kw': 'money',
 	'def_kw_2': 'money',
 	'def_cat': 'Books',
-	'def_cat_2': 'Collectibles',
+	'def_cat_2': 'Books',
 	'def_node': '', //'9003130011',
 	'def_node_2': '', //'9003130011',
 };
@@ -434,7 +434,12 @@ function epnRs(gasID, country, kw, divId, cmpId, rand, numItems, rows, cols, ite
 						var desc = el.find("description").text();
 						var link = el.find("link").text().replace(/http\:/, 'https\:') || '';
 						// 
-						var thumbnail = desc.match(/src\=['"](htt[^"]*\.jpg)['"]/)[1].replace(/http\:/, 'https\:') || '';
+						try {
+							var thumbnail = desc.match(/src\=['"](htt[^"]*\.jpg)['"]/)[1].replace(/http\:/, 'https\:');
+						} catch (e) {
+							var thumbnail = "";
+						}
+						// 
 						//// prevent items with no images:
 						if (thumbnail.match(/04040_0\.jpg/)) {
 							return true; // no continue for jq .each()!!
@@ -1134,10 +1139,11 @@ $(window).on("load", function() {
 		if (ThsBlg_pg == 'itempage') {
 			// --- AFF IN SIDEBAR
 			// DTP STR AFF SB
-			if (!detectmob()) {
-				$('#rightbar').prepend('<div  class="ldng_16_3x" id="amzSB_T"></div>');
-				amzFromLbls(thsBlg_amz.def_kw, thsBlg_amz.def_cat, "grid", "amzSB_T");
-			}
+			// if (!detectmob()) {
+			$('#rightbar').prepend('<div  class="ldng_16_3x" id="amzSB_T"></div>');
+			amzFromLbls(thsBlg_amz.def_kw, thsBlg_amz.def_cat, ((!detectmob()) ? "grid" : "text_links"),
+				"amzSB_T");
+			// }
 			// ---AFF FROM LABLES
 			$('.blogger-labels').before('<hr/><h4>If you liked it, ALSO TRY:</h4><hr/><div  class="ldng_16_3x"  id="ebRSBtm_1"></div><hr/><div class="ldng_16_3x"  id="ebRSBtm_2"></div><hr/>');
 			var kw = $('.blogger-labels').text().replace(/\s+/igm, " ").trim().replace(/(labels\:)/igm, "").trim();
@@ -1145,9 +1151,9 @@ $(window).on("load", function() {
 			if ($('.postbody h3 a').attr('href').match(/amazon\./)) {
 				kw = encodeURIComponent(kw.replace(/, /g, " ").trim());
 				epnFromLbls(kw, "ebRSBtm_1");
-				amzFromLbls(thsBlg_amz.def_kw_2, thsBlg_amz.def_cat_2, "grid", "ebRSBtm_2");
+				amzFromLbls(kw, thsBlg_amz.def_cat_2, "grid", "ebRSBtm_2");
 			} else {
-				amzFromLbls(thsBlg_amz.def_kw_2, thsBlg_amz.def_cat_2, "grid", "ebRSBtm_2");
+				amzFromLbls(kw, thsBlg_amz.def_cat_2, "grid", "ebRSBtm_2");
 				epnFromLbls(kw, "ebRSBtm_2");
 			}
 			// ---/AFF FROM LABLES
