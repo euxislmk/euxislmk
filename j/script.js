@@ -71,6 +71,11 @@ if (bnndQry != "yes") { //////////// if bnndQry  ///////////
 document.getElementsByTagName('head')[0].insertAdjacentHTML("beforeend", '<style> .ldng_16_3x {display:block;background-image:url(//' + thsBlg_img_cdn + 'ldng_16_3x.gif);background-repeat:no-repeat;background-position:center center;vertical-align: middle;} </style>');
 // 
 // ========== functions ==========
+function epn_rover2newURL(url, campid) {
+	//// v1 
+	var url = url.toString();
+	return "https://www.ebay.com/itm/" + url.match(/item\=([0-9]+)/im)[1] + "?mkrid=711-53200-19255-0&siteid=0&mkcid=1&campid=" + campid + "&toolid=10044&customid=&mkevt=1";
+}
 ///// MODDED FOR 
 function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
@@ -1136,6 +1141,17 @@ if (thsSiteTyp == "store") {
 			$(this).addClass('btn btn-success');
 		});
 		// 
+		//// epn new "track urls" instead of rover
+		$('.postbody a').each(function(index) {
+			var aurl = $(this).attr('href').trim();
+			if (aurl.match(/rover\.ebay/im)) {
+				// console.log(aurl);
+				var a = epn_rover2newURL(aurl, thsBlg_epn)
+				$(this).attr('href', a);
+				// console.log(a);
+			}
+		});
+		/////
 		// 
 	});
 	// 

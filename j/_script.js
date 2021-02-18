@@ -36,6 +36,10 @@ thsBlg_amz = {
 	'def_node': '', //'9003130011',
 	'def_node_2': '', //'9003130011',
 };
+thsBlg_as = '\x63' + 'a' + '-\x70\x75b-' + (1873488713147657 + 528760035384255 + 3287954364827809);
+var ad_Id_resp = '4481254246';
+var ad_Id_fixed = '5482333332';
+var lu_Id_resp = '7378369847';
 thsBlg_epn = "5337817697";
 thsBlg_dyn_catcher = "www.financializer.com/c/";
 thsBlg_img_cdn = "www.financializer.com/img/";
@@ -70,63 +74,84 @@ document.getElementsByTagName('head')[0].insertAdjacentHTML("beforeend", '<style
 ///// MODDED FOR 
 function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
+		return;
+	}
+	// v10 - bugfix
+	if (!document.getElementById(divId)) {
 		// 
 	} else {
-		// v10 - bugfix
-		if (!document.getElementById(divId)) {
-			// 
-		} else {
-			var a = "";
-			if (orient == "link") {
-				a = "link"
-			};
-			if (orient == "matched") {
-				a = "autorelaxed"
-			};
-			if (orient == "a") {
-				a = "auto"
-			};
-			if (orient == "h") {
-				a = "horizontal"
-			};
-			if (orient == "v") {
-				a = "vertical"
-			};
-			if (orient == "r") {
-				a = "rectangle"
-			};
-			if (orient == "rh") {
-				a = "rectangle, horizontal"
-			};
-			if (orient == "rv") {
-				a = "rectangle, vertical"
-			};
-			var divWidth = typeof divWidth !== 'undefined' ? divWidth : '100%';
-			var divHeight = typeof divHeight !== 'undefined' ? divHeight : '100%';
-			try {
-				document.getElementById(divId).innerHTML = '' +
-					'<style type="text/css">' +
-					'.adslot_' + idTxt + ' { width: ' + divWidth + '; height:' + divHeight + '; }' +
-					'</style>' +
-					prefix +
-					'<span  class="ldng_16_3x"  style="display:block;max-width:' + divWidth + ';max-height:' + divHeight + '">' +
-					' <ins class="adsbygoogle adslot_' + idTxt + '" ' +
-					' style="display:block" ' +
-					' data-ad-client="' + '\x63' + 'a' + '-\x70\x75b-' + (1873488713147657 + 528760035384255 + 3287954364827809) + '" ' +
-					' data-ad-slot="' + slot + '" ' +
-					' data-ad-format="' + a + '"></ins> ' +
-					'</span>' +
-					postfix +
-					'';
-				(adsbygoogle = window.adsbygoogle || []).push({
-						params: {
-							google_ad_channel: channel
-						}
-					});
-			} catch (e) {
-				return true;
-			}
+		var a = "";
+		if (orient == "link") {
+			a = "link"
+		};
+		if (orient == "matched") {
+			a = "autorelaxed"
+		};
+		if (orient == "a") {
+			a = "auto"
+		};
+		if (orient == "h") {
+			a = "horizontal"
+		};
+		if (orient == "v") {
+			a = "vertical"
+		};
+		if (orient == "r") {
+			a = "rectangle"
+		};
+		if (orient == "rh") {
+			a = "rectangle, horizontal"
+		};
+		if (orient == "rv") {
+			a = "rectangle, vertical"
+		};
+		var divWidth = typeof divWidth !== 'undefined' ? divWidth : '100%';
+		var divHeight = typeof divHeight !== 'undefined' ? divHeight : '100%';
+		try {
+			document.getElementById(divId).innerHTML = '' +
+				'<style type="text/css">' +
+				'.adslot_' + idTxt + ' { width: ' + divWidth + '; height:' + divHeight + '; }' +
+				'</style>' +
+				prefix +
+				'<span class="ldng_16_3x" style="display:block;max-width:' + divWidth + ';max-height:' + divHeight + '">' +
+				' <ins class="adsbygoogle adslot_' + idTxt + '" ' +
+				' style="display:block" ' +
+				' data-ad-client="' + thsBlg_as + '" ' +
+				' data-ad-slot="' + slot + '" ' +
+				' data-ad-format="' + a + '"></ins> ' +
+				'</span>' +
+				postfix +
+				'';
+			(adsbygoogle = window.adsbygoogle || []).push({
+					params: {
+						google_ad_channel: channel
+					}
+				});
+		} catch (e) {
+			return true;
 		}
+	}
+}
+
+function asadFixId(prefix, postfix, divId, width, height, slot, channel) {
+	//v3 (span not div)
+	if (!document.getElementById(divId)) {
+		// 
+	} else {
+		document.getElementById(divId).innerHTML = '' +
+			prefix +
+			' <ins class="adsbygoogle" ' +
+			' style="display:inline-block;' +
+			' width:' + width + 'px;' +
+			' height:' + height + 'px" ' +
+			' data-ad-client="' + thsBlg_as + '" ' +
+			' data-ad-slot="' + slot + '"></ins>' +
+			postfix;
+		(adsbygoogle = window.adsbygoogle || []).push({
+				params: {
+					google_ad_channel: channel
+				}
+			});
 	}
 }
 
@@ -738,6 +763,14 @@ function insertAfterHTMLByClass(divClass, html) {
 	}
 }
 
+function insertAfterHTML(divId, html) {
+	if (!document.getElementById(divId)) {
+		// 
+	} else {
+		document.getElementById(divId).insertAdjacentHTML("afterend", html);
+	}
+}
+
 function appendHTMLByTag(firstTag, html) {
 	if (!document.getElementsByTagName(firstTag)[0]) {
 		// 
@@ -814,9 +847,6 @@ function epnSrchURL(campId, srchQry) {
 // ///////////////// NEWS /////////////////
 ////////////   AS   /////////////
 if (thsSiteTyp == "news") {
-	//// fi ad resp 4481254246, lu resp 7378369847
-	var ad_Id_resp = '4481254246';
-	var lu_Id_resp = '7378369847';
 	//// NEWS CHANNELS
 	var ad_Channel = (ThsBlg_pg == 'mainpage') ? '1388187040' : '4341653445';
 	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '8911453841' : '2864920247';
@@ -1024,8 +1054,6 @@ if (thsSiteTyp == "news") {
 if (thsSiteTyp == "store") {
 	///////////    AS    //////////////
 	//// fi ad resp 4481254246, lu resp 7378369847
-	var ad_Id_resp = '4481254246';
-	var lu_Id_resp = '7378369847';
 	//// STORE CHANNELS
 	var ad_Channel = (ThsBlg_pg == 'mainpage') ? '3958521048' : '3958521048';
 	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '5435254248' : '5435254248';
@@ -1047,6 +1075,17 @@ if (thsSiteTyp == "store") {
 		insertAfterHTMLByClass('postbody', sideBysideLU);
 	}
 	if (ThsBlg_pg == 'itempage') {
+		/////////// FIXED ON BOTH MOB+DTP 
+		insertAfterHTML('cse_container', '<div id="as_itmpgTop" style="width:300px;height:90px;margin:0 auto;"></div>');
+		asadFixId(
+			'',
+			'',
+			"as_itmpgTop",
+			"300",
+			"90",
+			ad_Id_fixed,
+			ad_Channel
+		);
 		insertBeforeHTMLByClass('blogger-labels', sideBysideLU);
 	}
 	asadRespId(
