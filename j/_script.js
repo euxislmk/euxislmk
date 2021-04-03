@@ -77,8 +77,12 @@ function epn_rover2newURL(url, campid) {
 	var url = url.toString();
 	return "https://www.ebay.com/itm/" + url.match(/item\=([0-9]+)/im)[1] + "?mkrid=711-53200-19255-0&siteid=0&mkcid=1&campid=" + campid + "&toolid=10044&customid=&mkevt=1";
 }
-///// MODDED FOR 
+/// AUTO ON ///
 function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
+	return;
+}
+///// MODDED FOR 
+function _asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
 		return;
 	}
@@ -137,28 +141,6 @@ function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWid
 		} catch (e) {
 			return true;
 		}
-	}
-}
-
-function asadFixId(prefix, postfix, divId, width, height, slot, channel) {
-	//v3 (span not div)
-	if (!document.getElementById(divId)) {
-		// 
-	} else {
-		document.getElementById(divId).innerHTML = '' +
-			prefix +
-			' <ins class="adsbygoogle" ' +
-			' style="display:inline-block;' +
-			' width:' + width + 'px;' +
-			' height:' + height + 'px" ' +
-			' data-ad-client="' + thsBlg_as + '" ' +
-			' data-ad-slot="' + slot + '"></ins>' +
-			postfix;
-		(adsbygoogle = window.adsbygoogle || []).push({
-				params: {
-					google_ad_channel: channel
-				}
-			});
 	}
 }
 
@@ -363,7 +345,6 @@ function epnSmPl(divId, adID, kw = "", categ = "", divWidth = 300, divHeight = 2
 		}
 	}
 }
-
 
 function epnFromLbls(keywords, div) {
 	// v7 -  epnSmPl now (epn rss kaput)
