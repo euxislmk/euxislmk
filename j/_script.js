@@ -801,45 +801,23 @@ if (thsSiteTyp == "news") {
 	var ad_Channel = (ThsBlg_pg == 'mainpage') ? '1388187040' : '4341653445';
 	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '8911453841' : '2864920247';
 	// 
-	//// NEWS BOTH MAINPAGE+ITEMPAGE BOTH DTP+MOB AD 1/1
-	// prependHTML('leftbar', '<div style="min-height:100px"><div id="as_sb1"></div></div>');
-	// asadRespId(
-	// 	'',
-	// 	'',
-	// 	"as_sb1",
-	// 	"xyz_as_sb1",
-	// 	ad_Id_resp,
-	// 	ad_Channel,
-	// 	"a"
-	// );
 	//// NEWS BOTH MAINPAGE+ITEMPAGE BOTH DTP+MOB LU 2/2 
-	insertAfterHTMLByClass('postbody', '<div style="margin:10px auto 20px"> <div id="as_lb1"></div> </div>');
-	asadRespId(
-		'<div style="text-align:center">',
-		'</div>',
-		"as_lb1",
-		"xyz_as_lb1",
-		lu_Id_resp,
-		lu_Channel,
-		"link"
-	);
+	/// --- OFF: AUTO ON ----
+	// insertAfterHTMLByClass('postbody', '<div style="margin:10px auto 20px"> <div id="as_lb1"></div> </div>');
+	// asadRespId(
+	// 	'<div style="text-align:center">',
+	// 	'</div>',
+	// 	"as_lb1",
+	// 	"xyz_as_lb1",
+	// 	lu_Id_resp,
+	// 	lu_Channel,
+	// 	"link"
+	// );
 	// 
 	////////////////////  NEWS   MAINPAGE  ////////////////////
 	if (ThsBlg_pg == 'mainpage') {
 		// MAINPAGE DTP ad 1/1
-		if (!detectmob()) {
-			// prependHTML('sidebar_rec', '<div style="min-height:600px;"><div id="as_sb1"></div></div>');
-			// prependHTML('leftbar', '<div style="min-height:600px;width:90%;margin:0 10px 0 10px"><div id="as_sb1"></div></div>');
-			// asadRespId(
-			// 	'<div style="width:100%;">',
-			// 	'</div>',
-			// 	"as_sb1",
-			// 	"xyz_as_sb1",
-			// 	"4481254246",
-			// 	"1388187040",
-			// 	"a"
-			// );
-		}
+		if (!detectmob()) {}
 		// MAINPAGE MOB ad 1/1
 		if (detectmob()) {
 			// 
@@ -851,29 +829,18 @@ if (thsSiteTyp == "news") {
 	if (ThsBlg_pg == 'itempage') {
 		///
 		if (!detectmob()) {
-			// NEWS ITEMPAGE DTP ad 1/1
-			// insertAfterHTMLByClass('postbody', '<div style="min-height:200px;margin:20px 0;"><div id="as_item_B"></div></div>');
-			// prependHTML('leftbar', '<div style="min-height:500px;width:90%;margin:0 10px 0 10px"><div id="as_item_B"></div></div>');
+			// NEWS ITEMPAGE DTP LU 1/1
+			/// --- OFF: AUTO ON ----
+			// insertAfterHTMLByClass('dept', '<div style="float:right;  margin:10px 0 20px 20px;"><div style="margin:5px;width:200px;min-height:100px;"><div id="as_inbw"></div></div></div>');
 			// asadRespId(
 			// 	' ',
 			// 	' ',
-			// 	"as_item_B",
-			// 	"xyz_as_item_B",
-			// 	"4481254246",
-			// 	"4341653445",
-			// 	"a"
+			// 	"as_inbw",
+			// 	"xyz_as_inbw",
+			// 	"7378369847",
+			// 	"2864920247",
+			// 	"link"
 			// );
-			// NEWS ITEMPAGE DTP LU 1/1
-			insertAfterHTMLByClass('dept', '<div style="float:right;  margin:10px 0 20px 20px;"><div style="margin:5px;width:200px;min-height:100px;"><div id="as_inbw"></div></div></div>');
-			asadRespId(
-				' ',
-				' ',
-				"as_inbw",
-				"xyz_as_inbw",
-				"7378369847",
-				"2864920247",
-				"link"
-			);
 		}
 		// ITEMPAGE MOB ad 1/1
 		if (detectmob()) {
@@ -1009,46 +976,49 @@ if (thsSiteTyp == "store") {
 	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '5435254248' : '5435254248';
 	// 
 	//// STORE BOTH MAINPAGE+ITEMPAGE AD ON DTP SIDEBAR
-	var a = !detectmob() ? prependHTML('leftbar', '<div id="asSideBar"></div>') : '';
-	asadRespId(
-		'', // prefix
-		'', // postfix
-		"asSideBar", // div id
-		"xyz_asSideBar", // xyz_ + div id
-		ad_Id_resp, // slot
-		ad_Channel, // channel
-		'',
-		'160px',
-		'600px'
-	);
+	/// --- OFF: AUTO ON ----
+	// var a = !detectmob() ? prependHTML('leftbar', '<div id="asSideBar"></div>') : '';
+	// asadRespId(
+	// 	'', // prefix
+	// 	'', // postfix
+	// 	"asSideBar", // div id
+	// 	"xyz_asSideBar", // xyz_ + div id
+	// 	ad_Id_resp, // slot
+	// 	ad_Channel, // channel
+	// 	'',
+	// 	'160px',
+	// 	'600px'
+	// );
 	//// STORE BOTH MAINPAGE+ITEMPAGE
 	var asOnTop = detectmob() ? '<div id="asOnTop"></div>' : '';
 	var asOnBottom = '<hr/><div id="asOnBottom"></div><hr/>';
 	insertBeforeHTMLByClass('blogger-labels', asOnBottom);
-	insertAfterHTML('cse_container', asOnTop);
-	asadRespId(
-		'', // prefix
-		'', // postfix
-		"asOnTop", // div id
-		"xyz_asOnTop", // xyz_ + div id
-		ad_Id_resp, // slot
-		ad_Channel, // channel
-		'', // orient OR ""
-		"320px", // optional width eg "320px"
-		"50px" // optional height eg "50px" (must if width)
-	);
+	/// --- OFF: AUTO ON ----
+	// insertAfterHTML('cse_container', asOnTop);
+	// asadRespId(
+	// 	'', // prefix
+	// 	'', // postfix
+	// 	"asOnTop", // div id
+	// 	"xyz_asOnTop", // xyz_ + div id
+	// 	ad_Id_resp, // slot
+	// 	ad_Channel, // channel
+	// 	'', // orient OR ""
+	// 	"320px", // optional width eg "320px"
+	// 	"50px" // optional height eg "50px" (must if width)
+	// );
+	/// --- OFF: AUTO ON ----
 	//// ad mob+dtp
-	asadRespId(
-		'',
-		'',
-		"asOnBottom",
-		"xyz_asOnBottom",
-		ad_Id_resp,
-		ad_Channel,
-		'',
-		'336px',
-		'280px'
-	);
+	// asadRespId(
+	// 	'',
+	// 	'',
+	// 	"asOnBottom",
+	// 	"xyz_asOnBottom",
+	// 	ad_Id_resp,
+	// 	ad_Channel,
+	// 	'',
+	// 	'336px',
+	// 	'280px'
+	// );
 	// 
 	//////////////////
 	////////

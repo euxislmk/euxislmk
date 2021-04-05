@@ -77,7 +77,7 @@ function epn_rover2newURL(url, campid) {
 	var url = url.toString();
 	return "https://www.ebay.com/itm/" + url.match(/item\=([0-9]+)/im)[1] + "?mkrid=711-53200-19255-0&siteid=0&mkcid=1&campid=" + campid + "&toolid=10044&customid=&mkevt=1";
 }
-/// AUTO ON ///
+	/// --- OFF: AUTO ON ----
 function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	return;
 }
