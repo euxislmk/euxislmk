@@ -77,12 +77,9 @@ function epn_rover2newURL(url, campid) {
 	var url = url.toString();
 	return "https://www.ebay.com/itm/" + url.match(/item\=([0-9]+)/im)[1] + "?mkrid=711-53200-19255-0&siteid=0&mkcid=1&campid=" + campid + "&toolid=10044&customid=&mkevt=1";
 }
-	/// --- OFF: AUTO ON ----
-function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
-	return;
-}
+/// --- OFF: AUTO ON ----
 ///// MODDED FOR 
-function _asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
+function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
 		return;
 	}
@@ -975,50 +972,19 @@ if (thsSiteTyp == "store") {
 	var ad_Channel = (ThsBlg_pg == 'mainpage') ? '3958521048' : '3958521048';
 	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '5435254248' : '5435254248';
 	// 
-	//// STORE BOTH MAINPAGE+ITEMPAGE AD ON DTP SIDEBAR
-	/// --- OFF: AUTO ON ----
-	// var a = !detectmob() ? prependHTML('leftbar', '<div id="asSideBar"></div>') : '';
-	// asadRespId(
-	// 	'', // prefix
-	// 	'', // postfix
-	// 	"asSideBar", // div id
-	// 	"xyz_asSideBar", // xyz_ + div id
-	// 	ad_Id_resp, // slot
-	// 	ad_Channel, // channel
-	// 	'',
-	// 	'160px',
-	// 	'600px'
-	// );
 	//// STORE BOTH MAINPAGE+ITEMPAGE
-	var asOnTop = detectmob() ? '<div id="asOnTop"></div>' : '';
-	var asOnBottom = '<hr/><div id="asOnBottom"></div><hr/>';
-	insertBeforeHTMLByClass('blogger-labels', asOnBottom);
-	/// --- OFF: AUTO ON ----
-	// insertAfterHTML('cse_container', asOnTop);
-	// asadRespId(
-	// 	'', // prefix
-	// 	'', // postfix
-	// 	"asOnTop", // div id
-	// 	"xyz_asOnTop", // xyz_ + div id
-	// 	ad_Id_resp, // slot
-	// 	ad_Channel, // channel
-	// 	'', // orient OR ""
-	// 	"320px", // optional width eg "320px"
-	// 	"50px" // optional height eg "50px" (must if width)
-	// );
-	/// --- OFF: AUTO ON ----
-	//// ad mob+dtp
-	// asadRespId(
-	// 	'',
-	// 	'',
-	// 	"asOnBottom",
-	// 	"xyz_asOnBottom",
-	// 	ad_Id_resp,
-	// 	ad_Channel,
-	// 	'',
-	// 	'336px',
-	// 	'280px'
-	// );
+	insertAfterHTML('cse_container', '<div id="asOnTop"></div>');
+	asadRespId(
+		'', // prefix
+		'', // postfix
+		"asOnTop", // div id
+		"xyz_asOnTop", // xyz_ + div id
+		ad_Id_resp, // slot
+		ad_Channel, // channel
+		'', // orient OR ""
+		'320px',
+		'100px'
+	);
 	// 
 	//////////////////
 	////////
