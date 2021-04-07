@@ -46,27 +46,6 @@ thsBlg_dyn_catcher = "www.financializer.com/c/";
 thsBlg_img_cdn = "www.financializer.com/img/";
 thsBlg_gasJsnPrx = "AKfycbxTy7YPX7Wq9tjYx3Ad2QjCdSAT3jnIkmmM0cz0D_e2ZPWrWM0";
 // 
-//// ----------<pagelevelIfNotHardcoded>---------- //
-//// v2
-function pagelevelIfNotHardcoded() {
-	try {
-		var plTag = document.getElementsByTagName("head")[0].getElementsByTagName("script") || 0;
-		for (var i = 0; i < plTag.length; i++) {
-			if (plTag[i].textContent.match(/enable_page_level_ads/im)) {
-				return;
-			}
-		}
-		(adsbygoogle = window.adsbygoogle || []).push({
-			google_ad_client: thsBlg_as,
-			enable_page_level_ads: true
-		});
-	} catch (e) {}
-}
-if (bnndQry != "yes") { //////////// if bnndQry  ///////////
-	// pagelevelIfNotHardcoded();
-}
-////
-//// ----------</pagelevelIfNotHardcoded>---------- //
 ////
 // ldng_16_3x for asad style
 document.getElementsByTagName('head')[0].insertAdjacentHTML("beforeend", '<style> .ldng_16_3x {display:block;background-image:url(//' + thsBlg_img_cdn + 'ldng_16_3x.gif);background-repeat:no-repeat;background-position:center center;vertical-align: middle;} </style>');
@@ -966,6 +945,7 @@ if (thsSiteTyp == "news") {
 // 
 // /////////////////  STORE   /////////////////
 if (thsSiteTyp == "store") {
+	insertAfterHTML('jadeHeader', loadingDoneBar());
 	///////////    AS    //////////////
 	//// fi ad resp 4481254246, lu resp 7378369847
 	//// STORE CHANNELS
@@ -1036,6 +1016,7 @@ if (thsSiteTyp == "store") {
 			}
 		});
 		/////
+		$('#loadingDoneBar').remove();
 		// 
 	});
 	// 
