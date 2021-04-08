@@ -767,6 +767,12 @@ function epnSrchURL(campId, srchQry) {
 	var a = srchQry.trim().replace(/\s+/igm, "+").trim();
 	return 'https://www.ebay.com/sch/i.html?_ex_kw=&_mPrRngCbx=1&_nkw=' + a + '&mkcid=1&mkrid=711-53200-19255-0&siteid=0&campid=' + campId + '&customid=&toolid=10001&mkevt=1';
 }
+
+function loadingDoneBar() {
+	///// v2 
+	//// req bootstrap
+	return '<div id="loadingDoneBar"> <div class="progress"> <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%"> </div> </div> </div>';
+}
 // 
 // 
 // 
