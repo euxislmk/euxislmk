@@ -1,4 +1,4 @@
-/// news, www, financializer.com js (wip remove store. code)
+/// store.financializer.com js, wip: remove news., www. code 
 ///
 ///
 if (typeof thsSiteTyp == 'undefined') {
