@@ -45,6 +45,7 @@ thsBlg_epn_epnSmPl = "605f11506c98752d0e2ac45e"; //// ad id of epn smrt plcmnt
 thsBlg_dyn_catcher = "www.financializer.com/c/";
 thsBlg_img_cdn = "www.financializer.com/img/";
 thsBlg_gasJsnPrx = "AKfycbxTy7YPX7Wq9tjYx3Ad2QjCdSAT3jnIkmmM0cz0D_e2ZPWrWM0";
+thsBlg_reportProductForm = '1FAIpQLSeDsL3kKlbghsmvQQUZEemR3wEH22nscf5uZlz7WOim-R1hfg'; // gd form
 // 
 ////
 // ldng_16_3x for asad style
@@ -776,174 +777,7 @@ function loadingDoneBar() {
 // 
 // 
 // 
-// ///////////////// NEWS /////////////////
-////////////   AS   /////////////
-if (thsSiteTyp == "news") {
-	//// NEWS CHANNELS
-	var ad_Channel = (ThsBlg_pg == 'mainpage') ? '1388187040' : '4341653445';
-	var lu_Channel = (ThsBlg_pg == 'mainpage') ? '8911453841' : '2864920247';
-	// 
-	//// NEWS BOTH MAINPAGE+ITEMPAGE BOTH DTP+MOB LU 2/2 
-	/// --- OFF: AUTO ON ----
-	// insertAfterHTMLByClass('postbody', '<div style="margin:10px auto 20px"> <div id="as_lb1"></div> </div>');
-	// asadRespId(
-	// 	'<div style="text-align:center">',
-	// 	'</div>',
-	// 	"as_lb1",
-	// 	"xyz_as_lb1",
-	// 	lu_Id_resp,
-	// 	lu_Channel,
-	// 	"link"
-	// );
-	// 
-	////////////////////  NEWS   MAINPAGE  ////////////////////
-	if (ThsBlg_pg == 'mainpage') {
-		// MAINPAGE DTP ad 1/1
-		if (!detectmob()) {}
-		// MAINPAGE MOB ad 1/1
-		if (detectmob()) {
-			// 
-		}
-	}
-	////////////////////  NEWS   /MAINPAGE  ////////////////////
-	// 
-	////////////////////  NEWS   ITEMPAGE  ////////////////////
-	if (ThsBlg_pg == 'itempage') {
-		///
-		if (!detectmob()) {
-			// NEWS ITEMPAGE DTP LU 1/1
-			/// --- OFF: AUTO ON ----
-			// insertAfterHTMLByClass('dept', '<div style="float:right;  margin:10px 0 20px 20px;"><div style="margin:5px;width:200px;min-height:100px;"><div id="as_inbw"></div></div></div>');
-			// asadRespId(
-			// 	' ',
-			// 	' ',
-			// 	"as_inbw",
-			// 	"xyz_as_inbw",
-			// 	"7378369847",
-			// 	"2864920247",
-			// 	"link"
-			// );
-		}
-		// ITEMPAGE MOB ad 1/1
-		if (detectmob()) {
-			// 
-		}
-	}
-	// ////////////////////  NEWS   ITEMPAGE  ////////////////////
-	// 
-	//
-	//
-	// ========== NEWS. JQ READY ==========
-	$(function() {
-		// AS ids resp_a:3052006247, resp_lu:6991419040
-		// ========= mainpage =========
-		if (ThsBlg_pg == 'mainpage') {
-			// console.log('mainpage');
-		}
-		// ========= itempage =========
-		if (ThsBlg_pg == 'itempage') {
-			// 
-			///////////////   ITMPG PSTXT REFRMT    ////////////////
-			/////  
-			// FUNCS
-			function srchQryUrl(qry, type) {
-				// qry: text str, type: "date" or "rel"
-				var a;
-				if (type == "date") {
-					a = mnuUrlPrefix + qry + archQryURLSuff_dateTrue;
-				}
-				if (type == "rel") {
-					a = mnuUrlPrefix + qry + archQryURLSuff_dateFalse;
-				}
-				return a;
-			}
-
-			function outUrl(url) {
-				refStr = 'utm_source=' + ThsBlg_rt_dmn + '&utm_medium=twitter.com/' + ThsBlg_tw_pr;
-				var ref = (url.match(/\?/gi)) ? "&" + refStr : "?" + refStr;
-				return url + ref;
-			}
-			// 
-			// /FUNCS
-			// 
-			// wrap according to... in id for use later...
-			var acc = $(".postbody").html($(".postbody").html().replace(
-				// 
-				/([^<>\{\}]*according\s+to\s+)([^\.]*)(\.\s+)/,
-				// 
-				'<h4><span style="opacity:0.8" id="accordingTo"> $1 <span style="">$2</span> $3 <br/><br/></span></h4>'
-			)) || '';
-			// 
-			// dept label handler
-			var dept = $(".dept").text().replace(/([\:]|\sDept\:?)/, "") || $("h1").text().replace(/^(.*)\s+and\s+.*$/m, "$1");
-			$('.dept').remove();
-			// TOP LABEL
-			try {
-				$('.singlepost').prepend(
-					'<ol class="breadcrumb">  ' +
-					'<li><a style="color:#333" href="' + srchQryUrl(dept, 'rel') + '"> ' +
-					' <span class="glyphicon glyphicon-tags" aria-hidden="true"></span><span style="text-transform:uppercase;font-size:90%;">&nbsp; ' +
-					dept +
-					'</span></a> </li>' +
-					'</ol>'
-				);
-			} catch (e) {}
-			// dept label handler
-			// 
-			// KEEP EXEC ORDER FROM HERE!!
-			//
-			// 
-			// 1: OUTGOING LINK
-			try {
-				//////// OFF FOR FI  ... 
-				// var extUrl = $(".postbody a").attr("href");
-				// $(".postbody a").attr("href", outUrl(extUrl)); 
-			} catch (e) {}
-			//
-			// 2: TAGS IN PULLQUOTES
-			/* /// OFF FOR NOW
-			try {
-				var tags = "";
-				var reltagsContent = $('.rellinks').html();
-				// if has <i> else wrap in <i>
-				if (reltagsContent.match(/<i>/)) {
-					// 
-				} else {
-					reltagsContent = reltagsContent.replace(/([^@\,]*)\,/g, "</i>$1<i>");
-					$('.rellinks').html(reltagsContent);
-					// console.log($('.rellinks').html());
-				}
-				if ($('.rellinks i:eq(0)').text().match(/[a-z]+/)) {
-					$('.rellinks i').each(function(index) {
-						if ($(this).text().trim().length > 3) {
-							tags += '<li><a href="' + srchQryUrl($(this).text().trim(), 'rel') + '">' + $(this).text().trim() + '</a></li>';
-						}
-					});
-					$('.singlepost').wrap('<div class="panel panel-default"><div class="panel-body"></div></div>');
-					// use #accordingTo created earlier to insert tags div after that ...
-					$("#accordingTo").after('<div style="margin:5px" class="panel panel-default pull-right"><div class="panel-heading"><small>SEE ALSO</small></div> <div class="panel-body"><ul>' + tags + ' </ul></div></div>');
-				}
-			} catch (e) {}
-			*/
-			// TAGS IN PULLQUOTES
-			// 
-			$('.rellinks').remove();
-			$('#pagerwrap').before('<div style="clear:both;height:1px;"></div>');
-			// 
-			// para reformatting
-			// 
-			// 
-			///////////////   ITMPG PSTXT REFRMT    ////////////////
-			// 
-			// 
-		}
-		////////////       NEWS. ALL     /////////////
-		//
-		////////////       NEWS. ALL     /////////////
-		// 
-	});
-	// ///////////////// NEWS /////////////////
-}
+ 
 // 
 // 
 // ///////////////// /NEWS /////////////////
@@ -1077,7 +911,7 @@ $(window).on("load", function() {
 				"amzSB_T");
 			// }
 			// ---AFF FROM LABLES
-			$('.blogger-labels').before('<hr/><h4>If you liked it, ALSO TRY:</h4><hr/><div  class="ldng_16_3x"  id="ebRSBtm_1"></div><hr/><div class="ldng_16_3x"  id="ebRSBtm_2"></div><hr/>');
+			$('.blogger-labels').before('<hr/><div style="text-align:right;margin: -18px 0;"><a style="font: normal 12px/1em Arial;" rel="nofollow" href="https://docs.google.com/forms/d/e/' + thsBlg_reportProductForm + '/viewform?usp=sf_link"><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span> Report this item</a></div><div style="clear:both;"></div><hr/><h4>If you liked it, ALSO TRY:</h4><hr/><div  class="ldng_16_3x"  id="ebRSBtm_1"></div><hr/><div class="ldng_16_3x"  id="ebRSBtm_2"></div><hr/>');
 			var kw = $('.blogger-labels').text().replace(/\s+/igm, " ").trim().replace(/(labels\:)/igm, "").trim();
 			// console.log(kw);
 			try {
