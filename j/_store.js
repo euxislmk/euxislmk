@@ -777,7 +777,7 @@ function loadingDoneBar() {
 // 
 // 
 // 
-
+ 
 // 
 // 
 // ///////////////// /NEWS /////////////////
@@ -948,14 +948,6 @@ $(window).on("load", function() {
 				$("#mssngImgRedir_" + index).click(function() {
 					ga_evCatVal('store', 'inf_btnLocItmNw:U: ' + redirURL);
 				});
-
-				//// EPN AD IF BRKN IMG
-				$('.panel-footer').remove();
-				$('#brknimg').after('<div id="epnSmPl_brknimg"></div>')
-				epnSmPl("epnSmPl_brknimg", thsBlg_epn_epnSmPl);
-
-				// 
-
 			}
 		});
 		/// HNDLE BRKN IMGS
