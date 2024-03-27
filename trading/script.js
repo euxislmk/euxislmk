@@ -2,7 +2,7 @@ $(document).ready(function() {
     var container = $('#tradingviewtechnicalanalysis');
 
     // Create form, input field and button
-    var exchanges = ['NASDAQ', 'TSE', 'NYSE'];
+    var exchanges = ['NASDAQ', 'TSX', 'NYSE'];
     var defaultExchange = localStorage.getItem('exchange') || 'NASDAQ';
     var defaultSymbol = 'MSFT';
     var htmlContent = `
