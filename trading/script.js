@@ -1,36 +1,33 @@
 $(document).ready(function() {
-	var container = $('#tradingviewtechnicalanalysis');
-
-	// Create form, input field and button
 	var exchanges = ['TSX', 'NASDAQ', 'NYSE'];
-	var defaultExchange = localStorage.getItem('exchange') || 'NASDAQ';
+	var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	var defaultSymbol = 'AC';
 	var htmlContent = `
-								<form onsubmit="event.preventDefault(); tradingviewAnalysis($('#stockSymbol').val(), 'tradingview-widget');">
-												<div class="input-group">
-																<input type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="${defaultSymbol}">
-																<div class="input-group-btn">
-																				<button type="button" id="exchange" data-toggle="dropdown" class="btn btn-default dropdown-toggle">${defaultExchange} <span class="caret"></span></button>
-																				<ul class="dropdown-menu dropdown-menu-right">
-																								${exchanges.map(exchange => ` < li > < a href = "#"
+        <form onsubmit="event.preventDefault(); tradingviewAnalysis($('#stockSymbol').val(), 'tradingview-widget');">
+            <div class="input-group">
+                <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="${defaultSymbol}">
+                <div class="input-group-btn">
+                    <button type="button" id="exchange" data-toggle="dropdown" class="btn btn-default dropdown-toggle">${defaultExchange} <span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        ${exchanges.map(exchange => ` < li > < a href = "#"
 	onclick = "event.preventDefault();" > $ {
 		exchange
 	} < /a></li > `).join('')}
-																				</ul>
-																</div>
-												</div>
-								</form>
-								<div class="tradingview-widget-container">
-												<div id="tradingview-widget" class="tradingview-widget-container__widget"></div>
-												<div class="tradingview-widget-copyright">
-																<a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
-																				<span class="blue-text">Track all markets on TradingView</span>
-																</a>
-												</div>
-								</div>
-				`;
+                    </ul>
+                </div>
+            </div>
+        </form>
+        <div class="tradingview-widget-container">
+            <div id="tradingview-widget" class="tradingview-widget-container__widget"></div>
+            <div class="tradingview-widget-copyright">
+                <a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank">
+                    <span class="blue-text">Track all markets on TradingView</span>
+                </a>
+            </div>
+        </div>
+    `;
 
-	container.html(htmlContent);
+	$('#tradingviewtechnicalanalysis').html(htmlContent);
 
 	$('.dropdown-menu a').click(function(event) {
 		event.preventDefault();
@@ -38,9 +35,6 @@ $(document).ready(function() {
 		$('#exchange').html(selectedExchange + ' <span class="caret"></span>');
 		localStorage.setItem('exchange', selectedExchange);
 	});
-
-	// Set focus on the input field
-	$('#stockSymbol').focus();
 });
 
 function tradingviewAnalysis(symbol, divId) {
