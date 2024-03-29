@@ -15,12 +15,12 @@ body {
 .component-sizer {
   /* this is the one upon whose size all other divs' width are determind by masonry. height is not done by masonry at all */
   width: 280px;
-  height: 320px;
+  height: 340px;
 }
 
 .component-larger {
   /* relative to -size above must be px not % */
-  width: 550px;
+  width: 560px;
   height: 400px;
   max-width: 99%;
 }

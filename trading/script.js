@@ -190,9 +190,9 @@ $(document).ready(function() {
 
 <div id="header" class="container" style="max-width:99.9%; background:#65bb70">
 	<div class="row align-items-center" style="max-width:500px;">
-		<div id="logo" class="col col-3"><img src="../img/header_150x50.png" /></div>
-		<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 21px; color: white; line-height:1em;">Stock Analysis</h1></div>
-		<div id="lookup" class="col col-6"></div>
+		<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+		<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 19px; color: white; line-height:1em;">Stock Analysis</h1></div>
+		<div id="lookup" class="col col-7"></div>
 	</div>
 </div>
 
@@ -203,7 +203,8 @@ $(document).ready(function() {
 </div>
 
 
-<div id="footer">
+<hr/>
+<div id="footer" style="clear:both;width:99%;">
 <footer class="text-center py-3">
     <div class="container">
         <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p>
