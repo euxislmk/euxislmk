@@ -202,7 +202,7 @@ $(document).ready(function() {
 	</div>
 </div>
 
-<!--
+
 <div id="footer">
 <footer class="text-center py-3">
     <div class="container">
@@ -210,7 +210,7 @@ $(document).ready(function() {
     </div>
 </footer>
 </div>
--->
+
 
 			`);
 
