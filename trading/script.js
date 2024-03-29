@@ -10,6 +10,35 @@ if (typeof thsSiteTyp == 'undefined') {
 
 // FUNCS
 
+function initializeMasonry() {
+	// Initialize Masonry
+	var msnry = new Masonry('#components', {
+		itemSelector: '.component',
+		columnWidth: '.component-sizer',
+		percentPosition: true,
+		horizontalOrder: true
+
+	});
+
+	// Create a MutationObserver instance
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'childList') {
+				msnry.layout();
+			}
+		});
+	});
+
+	// Configuration of the observer
+	var config = {
+		childList: true
+	};
+
+	// Pass in the target node (in this case, #components), as well as the observer options
+	observer.observe(document.querySelector('#components'), config);
+
+}
+
 function shareButton() {
 
 	document.head.insertAdjacentHTML('beforeend', '<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">');
@@ -122,20 +151,21 @@ function runSymbol() {
 	// console.log(stocksymbol);
 
 	$('#components').empty();
-	// $('#components').append('<style>.component{display:inline-block;}<style>');
 
 	$('#components').append('<div class="component component-sizer" id="com1"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ta&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
 
 	$('#components').append('<div class="component component-larger" id="com2"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ch&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
 
+	initializeMasonry();
+
 }
 
 function main_Form() {
+
 	var exchanges = ['TSX', 'NASDAQ', 'NYSE', 'AMS', 'SSE', 'JPX', 'SZSE', 'HSI', 'NSE', 'LSE', 'FRA', 'ASX', 'BSE', 'ICE', 'TWSE', 'JSE', 'KRX', 'B3SA3', 'MOEX'];
 	var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	var defaultSymbol = 'AC';
-	var htmlContent = '<form onsubmit="event.preventDefault(); runSymbol();"> <div class="input-group"> <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
-	// var htmlContent = '<form onsubmit="event.preventDefault(); runSymbol();"> <div class="input-group"> <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <div class="input-group-btn"> <button type="button" id="exchange" data-toggle="dropdown" class="btn btn-default dropdown-toggle">' + defaultExchange + ' <span class="caret"></span> </button> <ul class="dropdown-menu dropdown-menu-right">' + (exchanges.map(exchange => '<li><a href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </div> </form>';
+	var htmlContent = '<form onsubmit="event.preventDefault(); runSymbol();"> <div class="input-group"> <input style="text-transform:uppercase" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
 
 	$('#lookup').prepend(htmlContent);
 
@@ -145,8 +175,6 @@ function main_Form() {
 		$('#exchange').html(selectedExchange + ' <span class="caret"></span>');
 		localStorage.setItem('exchange', selectedExchange);
 	});
-
-	// runSymbol();
 
 }
 
@@ -161,7 +189,7 @@ $(document).ready(function() {
 		$('body').append(`
 
 <div id="header" class="container" style="max-width:99.9%; background:#65bb70">
-	<div class="row align-items-center" style="max-width:400px;">
+	<div class="row align-items-center" style="max-width:500px;">
 		<div id="logo" class="col col-3"><img src="../img/header_150x50.png" /></div>
 		<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 21px; color: white; line-height:1em;">Stock Analysis</h1></div>
 		<div id="lookup" class="col col-6"></div>
@@ -169,9 +197,12 @@ $(document).ready(function() {
 </div>
 
 <div id="content">
-	<div class="container" style="max-width:99.9%"></div>
+	<div class="container" style="max-width:99.9%">
+	<div id="components"></div>
+	</div>
 </div>
 
+<!--
 <div id="footer">
 <footer class="text-center py-3">
     <div class="container">
@@ -179,52 +210,15 @@ $(document).ready(function() {
     </div>
 </footer>
 </div>
+-->
 
 			`);
 
-		$('#content .container').append('<div id="components"></div>');
-
 		main_Form();
+
 		runSymbol();
 
-		// runSymbol();
-
-		// <p>E&OE. For informational purposes only. Not for trading or advice.</p>
-
-		// ./c/?s=ch&a=NASDAQ:MSFT
-
-		// var msnry = new Masonry('#components', {
-		// 	itemSelector: '.component',
-		// 	columnWidth: '.component-sizer',
-		// 	percentPosition: true
-		// });
-		// msnry.layout();
-
-		// Initialize Masonry
-		var msnry = new Masonry('#components', {
-			itemSelector: '.component',
-			columnWidth: '.component-sizer',
-			percentPosition: true,
-			horizontalOrder: true
-
-		});
-
-		// Create a MutationObserver instance
-		var observer = new MutationObserver(function(mutations) {
-			mutations.forEach(function(mutation) {
-				if (mutation.type === 'childList') {
-					msnry.layout();
-				}
-			});
-		});
-
-		// Configuration of the observer
-		var config = {
-			childList: true
-		};
-
-		// Pass in the target node (in this case, #components), as well as the observer options
-		observer.observe(document.querySelector('#components'), config);
+		initializeMasonry();
 
 		$('#stockSymbol').focus();
 
@@ -292,7 +286,6 @@ $(document).ready(function() {
 </div>
 
 				`);
-
 
 		} // s=ch
 
