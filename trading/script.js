@@ -14,7 +14,7 @@ function initializeMasonry() {
 	// Initialize Masonry
 	var msnry = new Masonry('#components', {
 		itemSelector: '.component',
-		columnWidth: '.component-sizer',
+		// columnWidth: '.component-sizer',
 		percentPosition: true,
 		horizontalOrder: true
 
@@ -107,20 +107,16 @@ function shareButton() {
 }
 
 function scaleElement($element, scaleFactor) {
-	// Get the original width and height
-	var originalWidth = $element.width();
-	var originalHeight = $element.height();
+	// Apply the scale transform
+	$element.css('transform', 'scale(' + scaleFactor + ')');
 
-	// Calculate the new width and height
-	var newWidth = originalWidth * scaleFactor;
-	var newHeight = originalHeight * scaleFactor;
+	// Calculate the new margins
+	var newMarginTop = -($element.outerHeight() * (1 - scaleFactor)) / 2;
+	var newMarginLeft = -($element.outerWidth() * (1 - scaleFactor)) / 2;
 
-	// Set the new width and height
-	$element.css({
-		width: newWidth + 'px',
-		height: newHeight + 'px',
-		transform: 'scale(' + scaleFactor + ')'
-	});
+	// Apply the new margins
+	$element.css('margin-top', newMarginTop + 'px');
+	$element.css('margin-left', newMarginLeft + 'px');
 }
 
 function tradingviewAnalysis(symbol, divId) {
@@ -144,6 +140,14 @@ function tradingviewAnalysis(symbol, divId) {
 	}
 }
 
+function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
+
+	var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
+
+	return a;
+
+}
+
 function runSymbol() {
 
 	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
@@ -152,9 +156,20 @@ function runSymbol() {
 
 	$('#components').empty();
 
-	$('#components').append('<div class="component component-sizer" id="com1"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ta&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
+	// $('#components').append('<div class="component component-sizer" id="com_ta"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ta&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
 
-	$('#components').append('<div class="component component-larger" id="com2"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ch&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
+	$('#components').append(componentHtml(stocksymbol, "ta"));
+
+	$('#components').append(componentHtml(stocksymbol, "ch", "width:600px;height:382px;"));
+
+	$('#components').append(componentHtml(stocksymbol, "in", "width:310px;height:280px;"));
+
+	$('#components').append(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
+
+		$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
+
+
+	$('#components').append('<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>');
 
 	initializeMasonry();
 
@@ -186,34 +201,34 @@ $(document).ready(function() {
 
 	if (thsSiteTyp == "main") {
 
-		$('body').append(`
+		$('body').append(
+			`
+			<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
+				<div class="row align-items-center" style="max-width:500px;">
+					<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+					<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 16px; color: white; line-height:1em;">Stock Analysis</h1></div>
+					<div id="lookup" class="col col-7"></div>
+				</div>
+			</div>
 
-<div id="header" class="container" style="max-width:99.9%; background:#65bb70">
-	<div class="row align-items-center" style="max-width:500px;">
-		<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
-		<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 19px; color: white; line-height:1em;">Stock Analysis</h1></div>
-		<div id="lookup" class="col col-7"></div>
-	</div>
-</div>
-
-<div id="content">
-	<div class="container" style="max-width:99.9%">
-	<div id="components"></div>
-	</div>
-</div>
-
-
-<hr/>
-<div id="footer" style="clear:both;width:99%;">
-<footer class="text-center py-3">
-    <div class="container">
-        <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p>
-    </div>
-</footer>
-</div>
+			<div id="content" style="margin:10px auto;">
+				<div class="container" style="max-width:99.9%">
+				<div id="components"></div>
+				</div>
+			</div>
 
 
-			`);
+			<!-- 
+			<hr/>
+			<div id="footer" style="clear:both;width:99%;">
+			<footer class="text-center py-3">
+			    <div class="container">
+			        <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p>
+			    </div>
+			</footer>
+			</div>
+			`
+		);
 
 		main_Form();
 
@@ -249,51 +264,223 @@ $(document).ready(function() {
 
 		if (qs.get("s") == "ta") {
 
+			// scaleElement($('body'), 0.3);
+
 			var stocksymbol = qs.get("a");
 
-			$('body').append('<div style="width:300px;height:400px;overflow:hidden;"> <div id="tradingview-widget-container" class="tradingview-widget-container"> <div class="tradingview-widget-container__widget"></div> <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->');
+			document.write(`
 
-			tradingviewAnalysis(stocksymbol, "tradingview-widget-container");
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
+				  {
+				  "interval": "1D",
+				  "width": "100%",
+				  "isTransparent": true,
+				  "height": "100%",
+				  "symbol": "${stocksymbol}",
+				  "showIntervalTabs": true,
+				  "displayMode": "single",
+				  "locale": "en",
+				  "colorTheme": "light"
+				}
+				  </script>
+				</div>
+
+			`);
+
+			// scaleElement($('body'), 0.7);
+			// scaleAndCenterElement($('body'), 0.7);
+
+			// $('body').css({
+			// 	transform: 'scale(0.9)'
+			// });
+
+			// $('body').append('<div style="_width:300px;_height:400px;overflow:hidden;"> <div id="tradingview-widget-container" class="tradingview-widget-container"> <div class="tradingview-widget-container__widget"></div> <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->');
+
+			// tradingviewAnalysis(stocksymbol, "tradingview-widget-container");
 
 		} // s=ta
 
 		// 
 		// 
 
+		// chart
+
 		if (qs.get("s") == "ch") {
+
+			var stocksymbol = qs.get("a");
+
+			// simple widget
+			document.write(`
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
+				  {
+				  "symbols": [
+				    [
+				      "${stocksymbol}|1D"
+				    ]
+				  ],
+				  "chartOnly": false,
+				  "width": "100%",
+				  "height": "100%",
+				  "locale": "en",
+				  "colorTheme": "light",
+				  "autosize": false,
+				  "showVolume": false,
+				  "showMA": false,
+				  "hideDateRanges": false,
+				  "hideMarketStatus": false,
+				  "hideSymbolLogo": false,
+				  "scalePosition": "right",
+				  "scaleMode": "Normal",
+				  "fontFamily": "-apple-system, BlinkMacSystemFont, Trebuchet MS, Roboto, Ubuntu, sans-serif",
+				  "fontSize": "10",
+				  "noTimeScale": false,
+				  "valuesTracking": "1",
+				  "changeMode": "price-and-percent",
+				  "chartType": "area",
+				  "maLineColor": "#2962FF",
+				  "maLineWidth": 1,
+				  "maLength": 9,
+				  "lineWidth": 2,
+				  "lineType": 0,
+				  "dateRanges": [
+				    "1d|1",
+				    "1m|30",
+				    "3m|60",
+				    "12m|1D",
+				    "60m|1W",
+				    "all|1M"
+				  ]
+				}
+				  </script>
+				</div>
+							`);
+
+			// advanced widget
+
+			// 			document.write(`
+
+			// <div class="tradingview-widget-container" style="height:100%;width:100%">
+			// <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
+			// <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+			// <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
+			// {
+			// "autosize": true,
+			// "symbol": "${stocksymbol}",
+			// "interval": "1D",
+			// "timezone": "Etc/UTC",
+			// "theme": "light",
+			// "style": "1",
+			// "locale": "en",
+			// "enable_publishing": false,
+			// "allow_symbol_change": true,
+			// "calendar": false,
+			// "support_host": "https://www.tradingview.com"
+			// }
+			// </script>
+			// </div>
+
+			// 				`);
+
+		} // ch
+
+		// 
+		// 
+
+		// profile
+
+		if (qs.get("s") == "pr") {
 
 			var stocksymbol = qs.get("a");
 
 			document.write(`
 
-<div class="tradingview-widget-container" style="height:100%;width:100%">
-<div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-<!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
-<script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-{
-"autosize": true,
-"symbol": "${stocksymbol}",
-"interval": "1D",
-"timezone": "Etc/UTC",
-"theme": "light",
-"style": "1",
-"locale": "en",
-"enable_publishing": false,
-"allow_symbol_change": true,
-"calendar": false,
-"support_host": "https://www.tradingview.com"
-}
-</script>
-</div>
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js" async>
+				  {
+				  "width": "100%",
+				  "height": "100%",
+				  "isTransparent": true,
+				  "colorTheme": "light",
+				  "symbol": "${stocksymbol}",
+				  "locale": "en"
+				}
+				  </script>
+				</div>
 
-				`);
+			`);
 
-		} // s=ch
+		} // pr
 
 		// 
 		// 
+
+		// info
+
+		if (qs.get("s") == "in") {
+
+			var stocksymbol = qs.get("a");
+
+			document.write(`
+
+				<!-- TradingView Widget BEGIN -->
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
+				  {
+				  "symbol": "${stocksymbol}",
+				  "width": "100%",
+				  "locale": "en",
+				  "colorTheme": "light",
+				  "isTransparent": true
+				}
+				  </script>
+				</div>
+				<!-- TradingView Widget END -->
+
+							`);
+
+		} // pr
+
 		// 
 		// 
+
+		// fundamentals
+
+		if (qs.get("s") == "fu") {
+
+			var stocksymbol = qs.get("a");
+
+			document.write(`
+
+				<div class="tradingview-widget-container">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
+				  {
+				  "isTransparent": true,
+				  "largeChartUrl": "",
+				  "displayMode": "adaptive",
+				  "width": "100%",
+				  "height": "100%",
+				  "colorTheme": "light",
+				  "symbol": "${stocksymbol}",
+				  "locale": "en"
+				}
+				  </script>
+				</div>
+
+							`);
+
+		} // pr
 
 	}
 
