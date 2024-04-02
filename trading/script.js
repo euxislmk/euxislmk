@@ -11,6 +11,11 @@ if (typeof thsSiteTyp == 'undefined') {
 // FUNCS
 
 function initializeMasonry() {
+
+	/// footer must be handled here because it gets handged in between components
+	$('#footer').remove();
+	$('#components').append(allFooterHTML());
+
 	// Initialize Masonry
 	var msnry = new Masonry('#components', {
 		itemSelector: '.component',
@@ -49,8 +54,8 @@ function shareButton() {
 	// $('#' + divId).append(`
 	$('body').append(' <button id="shareButton"><i class="fas fa-share-alt"></i></button> <div id="fallbackMenu"> <button id="closeButton">X</button> <i class="fas fa-envelope-square"></i> <i class="fab fa-facebook-square"></i> <i class="fab fa-twitter-square"></i> <i class="fab fa-whatsapp"></i> <!-- i class="fab fa-pinterest-square"></i --> </div> ');
 
-	var a = 'position: fixed; bottom: 70px; right: 25px;';
-	var b = 'bottom: 70px; right: 20px; ';
+	var a = 'position: fixed; bottom: 30px; right: 25px;';
+	var b = 'bottom: 30px; right: 20px; ';
 
 	// Append the necessary CSS to the head
 	$('head').append('<style> #shareButton { ' + a + 'line-height:1em; opacity:0.85; font-size: 24px; background-color: #65bb70; color: white; border: none; padding: 12px; border-radius: 50%; cursor: pointer; } #fallbackMenu { ' + b + ' display: none; position: fixed; background-color: white; border: 1px solid #ccc; padding: 10px; border-radius: 5px; } #fallbackMenu i { font-size:24px; margin: 5px; cursor: pointer; } #closeButton { position: absolute; top: 0; right: 0; background: none; border: none; padding: 1px 4px 0 0; cursor: pointer; }</style>');
@@ -140,11 +145,34 @@ function tradingviewAnalysis(symbol, divId) {
 	}
 }
 
+function closer(element) {
+	$(element).parent().remove();
+	initializeMasonry();
+}
+
 function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
 
-	var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
+	// var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
+
+	var a = '<div style="position:relative;' + css + ' max-width: 99%;" class="component" id="com_' + s + '">' +
+
+		'<div style="text-transform:uppercase; padding:2px;color:white;font:12px/1em Arial; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
+
+		'<div onclick="closer(this);return false;" style="padding:2px;font:12px/1em Arial; cursor:pointer;border-radius:10px;position:absolute;right:0;top:0;background:#eee;">X</div>' +
+
+		'<iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
 
 	return a;
+
+}
+
+function multi_runSymbol() {
+
+	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
+
+	$('#components').append(componentHtml(stocksymbol, "ch", "width:300px;height:400px;"));
+
+	initializeMasonry();
 
 }
 
@@ -156,8 +184,6 @@ function runSymbol() {
 
 	$('#components').empty();
 
-	// $('#components').append('<div class="component component-sizer" id="com_ta"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=ta&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>');
-
 	$('#components').append(componentHtml(stocksymbol, "ta"));
 
 	$('#components').append(componentHtml(stocksymbol, "ch", "width:600px;height:382px;"));
@@ -166,21 +192,20 @@ function runSymbol() {
 
 	$('#components').append(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
 
-		$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
+	$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
 
-
-	$('#components').append('<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>');
+	// $('#components').append('<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>');
 
 	initializeMasonry();
 
 }
 
-function main_Form() {
+function main_Form(func = "runSymbol") {
 
 	var exchanges = ['TSX', 'NASDAQ', 'NYSE', 'AMS', 'SSE', 'JPX', 'SZSE', 'HSI', 'NSE', 'LSE', 'FRA', 'ASX', 'BSE', 'ICE', 'TWSE', 'JSE', 'KRX', 'B3SA3', 'MOEX'];
 	var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	var defaultSymbol = 'AC';
-	var htmlContent = '<form onsubmit="event.preventDefault(); runSymbol();"> <div class="input-group"> <input style="text-transform:uppercase" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
+	var htmlContent = '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="text-transform:uppercase" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
 
 	$('#lookup').prepend(htmlContent);
 
@@ -193,46 +218,108 @@ function main_Form() {
 
 }
 
+function templateHTML() {
+
+	var a = `
+
+		<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
+
+			<div class="row align-items-center" style="max-width:500px;">
+
+				<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+
+				<div id="title" class="col col-2"><h1 style="margin: 0; padding: 0; font-size: 16px; color: white; line-height:1em;">Analysis</h1></div>
+				
+				<div id="lookup" class="col col-6"></div>
+
+				<div id="menu" class="col col-2"></div>
+
+			</div>
+			<!-- #header -->
+
+		</div>
+
+
+
+		<div id="content" style="margin:10px auto;">
+			<div class="container" style="max-width:99.9%">
+				<div id="components"></div>
+			</div>
+		</div>
+
+			`;
+
+	// var a = `
+	// 	<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
+	// 		<div class="row align-items-center" style="max-width:500px;">
+	// 			<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+	// 			<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 16px; color: white; line-height:1em;">Stock Analysis</h1></div>
+	// 			<div id="lookup" class="col col-7"></div>
+	// 		</div>
+	// 	</div>
+	// 	<div id="content" style="margin:10px auto;">
+	// 		<div class="container" style="max-width:99.9%">
+	// 			<div id="components"></div>
+	// 		</div>
+	// 	</div>
+	// 		`;
+
+	return a;
+
+}
+
+function allFooterHTML() {
+
+	var a = '<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>';
+	return a;
+
+}
+
+function menu() {
+
+	$("#menu").html(`
+
+		<style>#menu a {color:white;font-size:13px;}</style>
+
+		<a href="./multi.html">Multi</a>
+
+		`);
+
+}
+
 // /FUNCS
 
 //
 
 $(document).ready(function() {
 
+	if (thsSiteTyp == "multi") {
+
+		$('body').append(templateHTML());
+
+		main_Form("multi_runSymbol");
+
+		multi_runSymbol();
+
+		menu();
+
+		initializeMasonry();
+
+		$('#stockSymbol').focus();
+
+		shareButton();
+
+	}
+
 	if (thsSiteTyp == "main") {
 
-		$('body').append(
-			`
-			<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
-				<div class="row align-items-center" style="max-width:500px;">
-					<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
-					<div id="title" class="col col-3"><h1 style="margin: 0; padding: 0; font-size: 16px; color: white; line-height:1em;">Stock Analysis</h1></div>
-					<div id="lookup" class="col col-7"></div>
-				</div>
-			</div>
-
-			<div id="content" style="margin:10px auto;">
-				<div class="container" style="max-width:99.9%">
-				<div id="components"></div>
-				</div>
-			</div>
-
-
-			<!-- 
-			<hr/>
-			<div id="footer" style="clear:both;width:99%;">
-			<footer class="text-center py-3">
-			    <div class="container">
-			        <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p>
-			    </div>
-			</footer>
-			</div>
-			`
-		);
+		$('body').append(templateHTML());
 
 		main_Form();
 
 		runSymbol();
+
+		menu();
 
 		initializeMasonry();
 
@@ -270,7 +357,7 @@ $(document).ready(function() {
 
 			document.write(`
 
-				<div class="tradingview-widget-container">
+				<div class="tradingview-widget-container" style="transform:scale(0.8)">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
@@ -314,6 +401,8 @@ $(document).ready(function() {
 
 			// simple widget
 			document.write(`
+				<style> </style>
+
 				<div class="tradingview-widget-container">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
