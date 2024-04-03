@@ -206,6 +206,8 @@ function multi_runSymbol() {
 
 		'<div class="component" style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' +
 
+		'<div onclick="closer(this);return false;" style="z-index:2;display:block;padding:2px;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;background:#eee;">X</div>' +
+
 		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.5) +
 
 		' ' +
