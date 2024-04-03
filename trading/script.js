@@ -150,6 +150,36 @@ function closer(element) {
 	initializeMasonry();
 }
 
+function transformScaler(width, height, scale) {
+
+	// returns [0] as parent css, and [1] as child's css
+
+	var reducedWidth = (width * (1 - scale));
+	var reducedHeight = (height * (1 - (scale)));
+
+	var top = reducedHeight / 2;
+	var left = reducedWidth / 2;
+
+	var output = ['width:' + (width - reducedWidth) + 'px;height:' + (height - reducedHeight) + 'px;position:relative;overflow:hidden;', 'width:' + width + 'px;height:' + height + 'px;top:-' + top + 'px;left:-' + left + 'px;overflow:hidden;position:absolute;']
+
+	return output;
+
+}
+
+function temp_componentHtml(stocksymbol, s) {
+
+	var scale = 0.40;
+	var width = 310;
+	var height = 382;
+
+	var a = '<div style="' + transformScaler(width, height, scale)[0] + 'outline:solid 2px green;" class="component" id="com_' + s + '">' +
+
+		' <iframe style="' + transformScaler(width, height, scale)[1] + '" src="./c/?s=' + s + '&b=' + scale + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe>  </div>';
+
+	return a;
+
+}
+
 function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
 
 	// var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
@@ -354,10 +384,11 @@ $(document).ready(function() {
 			// scaleElement($('body'), 0.3);
 
 			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
 
 			document.write(`
 
-				<div class="tradingview-widget-container" style="transform:scale(0.8)">
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
