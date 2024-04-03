@@ -166,13 +166,13 @@ function transformScaler(width, height, scale) {
 
 }
 
-function temp_componentHtml(stocksymbol, s) {
+function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale = 0.8) {
 
-	var scale = 0.40;
-	var width = 310;
-	var height = 382;
+	// var scale = 0.40;
+	// var width = 310;
+	// var height = 382;
 
-	var a = '<div style="' + transformScaler(width, height, scale)[0] + 'outline:solid 2px green;" class="component" id="com_' + s + '">' +
+	var a = '<div style="' + transformScaler(width, height, scale)[0] + '" class="_component com_' + (stocksymbol.replace(":", "")) + "_" + s + '">' +
 
 		' <iframe style="' + transformScaler(width, height, scale)[1] + '" src="./c/?s=' + s + '&b=' + scale + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe>  </div>';
 
@@ -184,7 +184,7 @@ function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
 
 	// var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
 
-	var a = '<div style="position:relative;' + css + ' max-width: 99%;" class="component" id="com_' + s + '">' +
+	var a = '<div style="position:relative;' + css + ' max-width: 99%;" class="component com_' + (stocksymbol.replace(":", "")) + "_" + s + '">' +
 
 		'<div style="text-transform:uppercase; padding:2px;color:white;font:12px/1em Arial; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
 
@@ -200,7 +200,24 @@ function multi_runSymbol() {
 
 	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
 
-	$('#components').append(componentHtml(stocksymbol, "ch", "width:300px;height:400px;"));
+	// $('#components').append(componentHtml(stocksymbol, "ch", "width:300px;height:400px;"));
+
+	$('#components').append(
+
+		'<div class="component" style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' +
+
+		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.5) +
+
+		' ' +
+
+		scaled_componentHtml(stocksymbol, "ch", 300, 400) +
+
+		'</div>'
+	);
+
+	// $('#components').append(scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.5));
+
+	// $('#components').append(scaled_componentHtml(stocksymbol, "ch", 300, 400));
 
 	initializeMasonry();
 
@@ -250,6 +267,7 @@ function main_Form(func = "runSymbol") {
 
 function templateHTML() {
 
+	var h1 = (document.title).replace(" - Financializer", "");
 	var a = `
 
 		<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
@@ -258,7 +276,7 @@ function templateHTML() {
 
 				<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
 
-				<div id="title" class="col col-2"><h1 style="margin: 0; padding: 0; font-size: 16px; color: white; line-height:1em;">Analysis</h1></div>
+				<div id="title" class="col col-2"><h1 style="margin: 0; padding: 0; font:11px/1em sans-serif; color: white; line-height:1em;">${h1}</h1></div>
 				
 				<div id="lookup" class="col col-6"></div>
 
@@ -359,14 +377,20 @@ $(document).ready(function() {
 
 	} // main
 
-	// 
-	// 
-	// 
-	// 
-	// 
-	// 
-
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
 	/// DYNAMIC CATCHER
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
+	///////////////////////////////
 
 	if (thsSiteTyp == "dyn_catcher") {
 
@@ -429,12 +453,13 @@ $(document).ready(function() {
 		if (qs.get("s") == "ch") {
 
 			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
 
 			// simple widget
 			document.write(`
 				<style> </style>
 
-				<div class="tradingview-widget-container">
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js" async>
@@ -517,10 +542,11 @@ $(document).ready(function() {
 		if (qs.get("s") == "pr") {
 
 			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
 
 			document.write(`
 
-				<div class="tradingview-widget-container">
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js" async>
@@ -547,11 +573,11 @@ $(document).ready(function() {
 		if (qs.get("s") == "in") {
 
 			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
 
 			document.write(`
 
-				<!-- TradingView Widget BEGIN -->
-				<div class="tradingview-widget-container">
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-info.js" async>
@@ -564,7 +590,6 @@ $(document).ready(function() {
 				}
 				  </script>
 				</div>
-				<!-- TradingView Widget END -->
 
 							`);
 
@@ -578,10 +603,11 @@ $(document).ready(function() {
 		if (qs.get("s") == "fu") {
 
 			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
 
 			document.write(`
 
-				<div class="tradingview-widget-container">
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-financials.js" async>
