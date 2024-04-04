@@ -192,7 +192,7 @@ function transformScaler(width, height, scale) {
 
 }
 
-function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale = 0.8) {
+function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale = 0.8, interval = "1D") {
 
 	// var scale = 0.40;
 	// var width = 310;
@@ -200,7 +200,7 @@ function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale =
 
 	var a = '<div style="' + transformScaler(width, height, scale)[0] + '" class="_component com_' + (stocksymbol.replace(":", "")) + "_" + s + '">' +
 
-		' <iframe style="' + transformScaler(width, height, scale)[1] + '" src="./c/?s=' + s + '&b=' + scale + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe>  </div>';
+		' <iframe style="' + transformScaler(width, height, scale)[1] + '" src="./c/?s=' + s + '&b=' + scale + '&c=' + interval + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe>  </div>';
 
 	return a;
 
@@ -236,20 +236,22 @@ function multi_runSymbol() {
 
 		'<div onclick="closer(this);return false;" style="z-index:2;display:block;padding:2px;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;background:#eee;">X</div>' +
 
+		'<div>' +
+
 		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.3) +
 
-		' ' +
+		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.3, "1W") +
 
-		scaled_componentHtml(stocksymbol, "ch", 300, 400) +
+		'</div><div>' +
 
-		'</div>'+
+		scaled_componentHtml(stocksymbol, "ch", 420, 350) +
+
+		'</div>' +
+
+		'</div>' +
 
 		'</div>'
 	);
-
-	// $('#components').append(scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.5));
-
-	// $('#components').append(scaled_componentHtml(stocksymbol, "ch", 300, 400));
 
 	initializeMasonry();
 
@@ -261,17 +263,17 @@ function runSymbol() {
 
 	// console.log(stocksymbol);
 
-	$('#components').empty();
+	// $('#components').empty();
 
 	$('#components').append(componentHtml(stocksymbol, "ta"));
 
 	$('#components').append(componentHtml(stocksymbol, "ch", "width:600px;height:382px;"));
 
-	$('#components').append(componentHtml(stocksymbol, "in", "width:310px;height:280px;"));
+	$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
 
 	$('#components').append(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
 
-	$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
+	$('#components').append(componentHtml(stocksymbol, "in", "width:310px;height:280px;"));
 
 	// $('#components').append('<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>');
 
@@ -441,6 +443,7 @@ $(document).ready(function() {
 
 			var stocksymbol = qs.get("a");
 			var scale = qs.get("b") || '1';
+			var interval = qs.get("c") || '1D';
 
 			document.write(`
 
@@ -449,7 +452,7 @@ $(document).ready(function() {
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
 				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-technical-analysis.js" async>
 				  {
-				  "interval": "1D",
+				  "interval": "${interval}",
 				  "width": "100%",
 				  "isTransparent": true,
 				  "height": "100%",
