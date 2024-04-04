@@ -165,7 +165,7 @@ function tradingviewAnalysis(symbol, divId) {
 			"showIntervalTabs": true,
 			"displayMode": "single",
 			"locale": "en",
-			"colorTheme": "light"
+			"colorTheme": "dark"
 		});
 		document.getElementById(divId).appendChild(script);
 	}
@@ -375,6 +375,9 @@ function menu() {
 
 $(document).ready(function() {
 
+			$('head').append('<style>body{background:black;}</style>');
+
+
 	if (thsSiteTyp == "multi") {
 
 		$('body').append(templateHTML());
@@ -428,7 +431,9 @@ $(document).ready(function() {
 
 	if (thsSiteTyp == "dyn_catcher") {
 
-		$('head').append('<style>body{margin:0;padding:0;font-family:Roboto, sans-serif;font-size:12px;}</style>');
+		// $('head').append('<style>body{margin:0;padding:0;font-family:Roboto, sans-serif;font-size:12px;}</style>');
+
+		document.write('<style>body{background:black;margin:0;padding:0;font-family:Roboto, sans-serif;font-size:12px;}</style>');
 
 		// 
 		// 
@@ -447,6 +452,7 @@ $(document).ready(function() {
 
 			document.write(`
 
+
 				<div class="tradingview-widget-container" style="transform:scale(${scale})">
 				  <div class="tradingview-widget-container__widget"></div>
 				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
@@ -460,7 +466,7 @@ $(document).ready(function() {
 				  "showIntervalTabs": true,
 				  "displayMode": "single",
 				  "locale": "en",
-				  "colorTheme": "light"
+				  "colorTheme": "dark"
 				}
 				  </script>
 				</div>
@@ -508,7 +514,7 @@ $(document).ready(function() {
 				  "width": "100%",
 				  "height": "100%",
 				  "locale": "en",
-				  "colorTheme": "light",
+				  "colorTheme": "dark",
 				  "autosize": false,
 				  "showVolume": false,
 				  "showMA": false,
@@ -589,7 +595,7 @@ $(document).ready(function() {
 				  "width": "100%",
 				  "height": "100%",
 				  "isTransparent": true,
-				  "colorTheme": "light",
+				  "colorTheme": "dark",
 				  "symbol": "${stocksymbol}",
 				  "locale": "en"
 				}
@@ -620,7 +626,7 @@ $(document).ready(function() {
 				  "symbol": "${stocksymbol}",
 				  "width": "100%",
 				  "locale": "en",
-				  "colorTheme": "light",
+				  "colorTheme": "dark",
 				  "isTransparent": true
 				}
 				  </script>
@@ -652,7 +658,7 @@ $(document).ready(function() {
 				  "displayMode": "adaptive",
 				  "width": "100%",
 				  "height": "100%",
-				  "colorTheme": "light",
+				  "colorTheme": "dark",
 				  "symbol": "${stocksymbol}",
 				  "locale": "en"
 				}
