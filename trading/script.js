@@ -12,6 +12,32 @@ if (typeof thsSiteTyp == 'undefined') {
 
 function initializeMasonry() {
 
+	var msnry = new Masonry('#components', {
+		itemSelector: '.component',
+		// columnWidth: '.component-sizer',
+		percentPosition: true,
+		horizontalOrder: true
+	});
+
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+			if (mutation.type === 'childList') {
+				msnry.prepended(mutation.addedNodes);
+				msnry.layout();
+			}
+		});
+	});
+
+	var config = {
+		childList: true
+	};
+
+	observer.observe(document.querySelector('#components'), config);
+
+}
+
+function orig_initializeMasonry() {
+
 	/// footer must be handled here because it gets handged in between components
 	$('#footer').remove();
 	$('#components').append(allFooterHTML());
@@ -204,15 +230,19 @@ function multi_runSymbol() {
 
 	$('#components').append(
 
-		'<div class="component" style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' +
+		'<div class="component">' +
+
+		'<div style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' + // !IMP! extra div req else masonry fcks up flex on component
 
 		'<div onclick="closer(this);return false;" style="z-index:2;display:block;padding:2px;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;background:#eee;">X</div>' +
 
-		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.5) +
+		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.3) +
 
 		' ' +
 
 		scaled_componentHtml(stocksymbol, "ch", 300, 400) +
+
+		'</div>'+
 
 		'</div>'
 	);
@@ -254,7 +284,7 @@ function main_Form(func = "runSymbol") {
 	var exchanges = ['TSX', 'NASDAQ', 'NYSE', 'AMS', 'SSE', 'JPX', 'SZSE', 'HSI', 'NSE', 'LSE', 'FRA', 'ASX', 'BSE', 'ICE', 'TWSE', 'JSE', 'KRX', 'B3SA3', 'MOEX'];
 	var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	var defaultSymbol = 'AC';
-	var htmlContent = '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="text-transform:uppercase" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
+	var htmlContent = '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
 
 	$('#lookup').prepend(htmlContent);
 
@@ -272,7 +302,7 @@ function templateHTML() {
 	var h1 = (document.title).replace(" - Financializer", "");
 	var a = `
 
-		<div id="header" class="container" style="padding:3px;max-width:99.9%; background:#65bb70">
+		<div id="header" class="container" style="margin:4px auto; outline:solid 4px #65bb70; max-width:99.9%; background:#65bb70">
 
 			<div class="row align-items-center" style="max-width:500px;">
 
