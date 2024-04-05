@@ -206,29 +206,13 @@ function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale =
 
 }
 
-function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
-
-	// var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
-
-	var a = '<div style="position:relative;' + css + ' max-width: 99%;" class="component com_' + (stocksymbol.replace(":", "")) + "_" + s + '">' +
-
-		'<div style="text-transform:uppercase; padding:2px;color:white;font:12px/1em Arial; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
-
-		'<div onclick="closer(this);return false;" style="padding:2px;font:12px/1em Arial; cursor:pointer;border-radius:10px;position:absolute;right:0;top:0;background:#eee;">X</div>' +
-
-		'<iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
-
-	return a;
-
-}
-
 function multi_runSymbol() {
 
 	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
 
 	// $('#components').append(componentHtml(stocksymbol, "ch", "width:300px;height:400px;"));
 
-	$('#components').append(
+	$('#components').prepend(
 
 		'<div class="component">' +
 
@@ -240,13 +224,13 @@ function multi_runSymbol() {
 
 		'<div>' +
 
-		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.3) +
+		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.4) +
 
-		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.3, "1W") +
+		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.4, "1W") +
 
 		'</div><div>' +
 
-		scaled_componentHtml(stocksymbol, "ch", 420, 350) +
+		scaled_componentHtml(stocksymbol, "ch", 460, 380) +
 
 		'</div>' +
 
@@ -259,23 +243,49 @@ function multi_runSymbol() {
 
 }
 
+function componentHtml(stocksymbol, s, css = "width:310px;height:382px;") {
+
+	// var a = '<div style="' + css + ' max-width: 99%;" class="component" id="com_' + s + '"><iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
+
+	var a = '<div style="position:relative;' + css + ' max-width: 99%;" class="component com_' + (stocksymbol.replace(":", "")) + "_" + s + '">' +
+
+		// '<div style="text-transform:uppercase; padding:2px;color:white;font:12px/1em Arial; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
+
+		// '<div onclick="closer(this);return false;" style="padding:2px;font:12px/1em Arial; cursor:pointer;border-radius:10px;position:absolute;right:0;top:0;background:#eee;">X</div>' +
+
+		'<iframe style="width:100%; height:100%;overflow:hidden;" src="./c/?s=' + s + '&a=' + stocksymbol + '" scrolling="no" frameborder="0" border="0"></iframe></div>';
+
+	return a;
+
+}
+
 function runSymbol() {
 
 	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
 
 	// console.log(stocksymbol);
 
-	// $('#components').empty();
+	$('#components').empty();
 
-	$('#components').append(componentHtml(stocksymbol, "ta"));
+	initializeMasonry();
 
-	$('#components').append(componentHtml(stocksymbol, "ch", "width:600px;height:382px;"));
+	$('#components').prepend(componentHtml(stocksymbol, "in", "width:310px;height:280px;"));
+	initializeMasonry();
 
-	$('#components').append(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
+	$('#components').prepend(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
+	initializeMasonry();
 
-	$('#components').append(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
+	$('#components').prepend(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
+	initializeMasonry();
 
-	$('#components').append(componentHtml(stocksymbol, "in", "width:310px;height:280px;"));
+	$('#components').prepend(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
+	initializeMasonry();
+
+	$('#components').prepend(componentHtml(stocksymbol, "ch", "width:600px;height:382px;"));
+	initializeMasonry();
+
+	$('#components').prepend(componentHtml(stocksymbol, "ta"));
+	initializeMasonry();
 
 	// $('#components').append('<div class="component" id="footer" style="clear:both;width:99%;"> <footer class="text-center py-3"> <div class="container"> <p class="mb-0 fs-8">E&OE. For informational purposes only. Not for trading or advice.</p> </div> </footer> </div>');
 
