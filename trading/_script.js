@@ -192,6 +192,17 @@ function transformScaler(width, height, scale) {
 
 }
 
+function urlParam(name) {
+	// req jq
+	// console.log(urlParam('a'));  // Outputs: "b"
+	var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+	if (results == null) {
+		return null;
+	} else {
+		return decodeURI(results[1]) || 0;
+	}
+}
+
 function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale = 0.8, interval = "1D") {
 
 	// var scale = 0.40;
@@ -206,15 +217,9 @@ function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale =
 
 }
 
-function multi_runSymbol() {
+function multi_2TA1CH_HTML(stocksymbol) {
 
-	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
-
-	// $('#components').append(componentHtml(stocksymbol, "ch", "width:300px;height:400px;"));
-
-	$('#components').prepend(
-
-		'<div class="component">' +
+	var a = '<div class="component">' +
 
 		'<div style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' + // !IMP! extra div req else masonry fcks up flex on component
 
@@ -236,10 +241,27 @@ function multi_runSymbol() {
 
 		'</div>' +
 
-		'</div>'
-	);
+		'</div>';
 
-	initializeMasonry();
+	return a;
+
+}
+
+function multi_runSymbol() {
+
+	var stocksymbol = null;
+
+	try {
+		stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
+	} catch (e) {}
+
+	if (stocksymbol) {
+
+		$('#components').prepend(multi_2TA1CH_HTML(stocksymbol));
+
+		initializeMasonry();
+
+	}
 
 }
 
@@ -275,9 +297,6 @@ function runSymbol() {
 	$('#components').prepend(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
 	initializeMasonry();
 
-	$('#components').prepend(componentHtml(stocksymbol, "pr", "width:600px;height:280px;"));
-	initializeMasonry();
-
 	$('#components').prepend(componentHtml(stocksymbol, "fu", "width:98%;height:500px;"));
 	initializeMasonry();
 
@@ -296,8 +315,21 @@ function runSymbol() {
 function main_Form(func = "runSymbol") {
 
 	var exchanges = ['TSX', 'NASDAQ', 'NYSE', 'AMS', 'SSE', 'JPX', 'SZSE', 'HSI', 'NSE', 'LSE', 'FRA', 'ASX', 'BSE', 'ICE', 'TWSE', 'JSE', 'KRX', 'B3SA3', 'MOEX'];
+
 	var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	var defaultSymbol = 'AC';
+
+	if (urlParam('s')) {
+		var stockSymbol = (urlParam('s')).trim();
+		defaultExchange = stockSymbol.split(":")[0];
+		defaultSymbol = stockSymbol.split(":")[1];
+		document.title = stockSymbol + " - " + document.title;
+
+	}
+
+	// var defaultExchange = localStorage.getItem('exchange') || 'TSX';
+	// var defaultSymbol = 'AC';
+
 	var htmlContent = '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
 
 	$('#lookup').prepend(htmlContent);
@@ -391,6 +423,16 @@ $(document).ready(function() {
 
 	if (thsSiteTyp == "multi") {
 
+		// headless or not (for embedding elsewhere e.g apps)
+
+		if (urlParam('m') == "hl") { // mode headless
+			// 
+			console.log('headless!');
+			$('head').append('<style>#header{display:none;}#content,.container, * {padding:0; margin:0!important;}</style>');
+		}
+
+		// headless or not
+
 		$('body').append(templateHTML());
 
 		main_Form("multi_runSymbol");
@@ -450,6 +492,18 @@ $(document).ready(function() {
 		// 
 		// 
 		// 
+
+		// if (qs.get("s") == "2TA1CH") {
+
+		// 	var stocksymbol = qs.get("a");
+		// 	var scale = qs.get("b") || '1';
+		// 	var interval = qs.get("c") || '1D';
+
+		// 	$('body').append(multi_2TA1CH_HTML(stocksymbol));
+
+		// 	// initializeMasonry();
+
+		// }
 
 		// technical analysis
 
@@ -683,3 +737,6 @@ $(document).ready(function() {
 	}
 
 });
+
+// 
+//

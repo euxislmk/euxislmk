@@ -428,7 +428,7 @@ $(document).ready(function() {
 		if (urlParam('m') == "hl") { // mode headless
 			// 
 			console.log('headless!');
-			$('head').append('<style>#header{display:none;}#content,.container, * {padding:0; margin:0!important;}</style>');
+			$('head').append('<style>#header, #shareButton{display:none;}#content,.container, * {padding:0; margin:0!important;}</style>');
 		}
 
 		// headless or not
