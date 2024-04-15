@@ -217,15 +217,51 @@ function scaled_componentHtml(stocksymbol, s, width = 310, height = 382, scale =
 
 }
 
+// function multi_2TA1CH_HTML(stocksymbol) {
+
+// 	var a = '<div class="component">' +
+
+// 		'<div style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' + // !IMP! extra div req else masonry fcks up flex on component
+
+// 		'<div style="z-index:2;text-transform:uppercase; padding:2px;color:white;font:bold 12px/1em sans-serif; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
+
+// 		'<div onclick="closer(this);return false;" style="color:white;z-index:2;display:block;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;">X</div>' +
+
+// 		'<div>' +
+
+// 		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.4) +
+
+// 		scaled_componentHtml(stocksymbol, "ta", undefined, undefined, 0.4, "1W") +
+
+// 		'</div><div>' +
+
+// 		scaled_componentHtml(stocksymbol, "ch", 460, 380) +
+
+// 		'</div>' +
+
+// 		'</div>' +
+
+// 		'</div>';
+
+// 	return a;
+
+// }
+
 function multi_2TA1CH_HTML(stocksymbol) {
 
 	var a = '<div class="component">' +
+
+		'<div style="z-index:2; position:absolute;right:2px;top:2px;overflow:hidden;border:solid 1px #444;">' +
+
+		scaled_componentHtml(stocksymbol, "mc", 200, 100, 0.8, "3M") +
+
+		'</div>' +
 
 		'<div style="margin:4px; display:flex;box-shadow:0 0 4px #555;_outline:solid 1px #eee;">' + // !IMP! extra div req else masonry fcks up flex on component
 
 		'<div style="z-index:2;text-transform:uppercase; padding:2px;color:white;font:bold 12px/1em sans-serif; position:absolute;left:0;top:0;background:#65bb70;">' + stocksymbol + '</div>' +
 
-		'<div onclick="closer(this);return false;" style="color:white;z-index:2;display:block;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;">X</div>' +
+		'<div onclick="closer(this);return false;" style="color:white;z-index:3;display:block;font:12px/1em Arial; cursor:pointer;position:absolute;right:0;top:0;">X</div>' +
 
 		'<div>' +
 
@@ -427,7 +463,7 @@ $(document).ready(function() {
 
 		if (urlParam('m') == "hl") { // mode headless
 			// 
-			console.log('headless!');
+			// console.log('headless!');
 			$('head').append('<style>#header, #shareButton{display:none;}#content,.container, * {padding:0; margin:0!important;}</style>');
 		}
 
@@ -488,24 +524,38 @@ $(document).ready(function() {
 
 		document.write('<style>body{background:black;margin:0;padding:0;font-family:Roboto, sans-serif;font-size:12px;}</style>');
 
-		// 
-		// 
-		// 
-		// 
+		if (qs.get("s") == "mc") {
 
-		// if (qs.get("s") == "2TA1CH") {
+			var stocksymbol = qs.get("a");
+			var scale = qs.get("b") || '1';
+			var interval = qs.get("c") || '3M';
 
-		// 	var stocksymbol = qs.get("a");
-		// 	var scale = qs.get("b") || '1';
-		// 	var interval = qs.get("c") || '1D';
+			document.write(`
+				<style> </style>
 
-		// 	$('body').append(multi_2TA1CH_HTML(stocksymbol));
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-mini-symbol-overview.js" async>
+				  {
+				  "symbol": "${stocksymbol}",
+				  "width": "100%",
+				  "height": "100%",
+				  "locale": "en",
+				  "dateRange": "${interval}",
+				  "colorTheme": "dark",
+				  "isTransparent": true,
+				  "autosize": true,
+				  "largeChartUrl": "",
+				  "chartOnly": true,
+				  "noTimeScale": false
 
-		// 	// initializeMasonry();
+				}
+				  </script>
+				</div>
+							`);
 
-		// }
-
-		// technical analysis
+		}
 
 		if (qs.get("s") == "ta") {
 

@@ -524,6 +524,73 @@ $(document).ready(function() {
 
 		document.write('<style>body{background:black;margin:0;padding:0;font-family:Roboto, sans-serif;font-size:12px;}</style>');
 
+				// 
+		// 
+		//  market overview
+
+		if (qs.get("s") == "mo") {
+
+			// IMP for "mo" only is JSON
+			var stocksymbol = qs.get("a");
+			// &a=[{"s":"TSX:TSX","d":"INDEX:TSX"}]
+			// console.log(stocksymbol);
+			// var s1 = qs.get("s1");
+			// var d1 = qs.get("d1");
+
+
+			var scale = qs.get("b") || '1';
+			var interval = qs.get("c") || '1D';
+
+			document.write(`
+				<style> </style>
+
+				<div class="tradingview-widget-container" style="transform:scale(${scale})">
+				  <div class="tradingview-widget-container__widget"></div>
+				  <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> --> 
+				  <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-market-overview.js" async>
+				    {
+				    "colorTheme": "dark",
+				    "dateRange": "${interval}",
+				    "showChart": true,
+				    "locale": "en",
+				    "width": "100%",
+				    "height": "100%",
+				    "largeChartUrl": "",
+				    "isTransparent": true,
+				    "showSymbolLogo": true,
+				    "showFloatingTooltip": true,
+				    "plotLineColorGrowing": "rgba(41, 98, 255, 1)",
+				    "plotLineColorFalling": "rgba(41, 98, 255, 1)",
+				    "gridLineColor": "rgba(240, 243, 250, 0)",
+				    "scaleFontColor": "rgba(106, 109, 120, 1)",
+				    "belowLineFillColorGrowing": "rgba(41, 98, 255, 0.12)",
+				    "belowLineFillColorFalling": "rgba(41, 98, 255, 0.12)",
+				    "belowLineFillColorGrowingBottom": "rgba(41, 98, 255, 0)",
+				    "belowLineFillColorFallingBottom": "rgba(41, 98, 255, 0)",
+				    "symbolActiveColor": "rgba(41, 98, 255, 0.12)",
+				    "tabs": [
+				      {
+				        "title": "Indices",
+				        "symbols": ${stocksymbol},
+				        "originalTitle": "Indices"
+				      }
+				    ]
+				  }
+				  </script>
+				</div>
+
+							`);
+
+		}
+
+
+		// [{"s":"${s1}","d":"${d1}"}]
+
+
+		// 
+		// 
+		//  mini chart
+
 		if (qs.get("s") == "mc") {
 
 			var stocksymbol = qs.get("a");
@@ -661,32 +728,6 @@ $(document).ready(function() {
 				  </script>
 				</div>
 							`);
-
-			// advanced widget
-
-			// 			document.write(`
-
-			// <div class="tradingview-widget-container" style="height:100%;width:100%">
-			// <div class="tradingview-widget-container__widget" style="height:calc(100% - 32px);width:100%"></div>
-			// <!-- <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com/" rel="noopener nofollow" target="_blank"><span class="blue-text">Track all markets on TradingView</span></a></div> -->
-			// <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
-			// {
-			// "autosize": true,
-			// "symbol": "${stocksymbol}",
-			// "interval": "1D",
-			// "timezone": "Etc/UTC",
-			// "theme": "light",
-			// "style": "1",
-			// "locale": "en",
-			// "enable_publishing": false,
-			// "allow_symbol_change": true,
-			// "calendar": false,
-			// "support_host": "https://www.tradingview.com"
-			// }
-			// </script>
-			// </div>
-
-			// 				`);
 
 		} // ch
 
