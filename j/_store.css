@@ -1,14 +1,14 @@
-/*  === FI SPECIFIC  ===  */
+/*  === ZD SPECIFIC  ===  */
 
 #logoheader {
-  _background: black;
+  background: black;
 }
 
 #logoheader img {
-  _filter: invert(1);
+  filter: invert(1);
 }
 
-/*  === FI SPECIFIC  ===  */
+/*  === ZD SPECIFIC  ===  */
 
 /*  === COMMON ===  */
 
