@@ -1,5 +1,5 @@
 /// store.financializer.com js, wip: remove news., www. code 
-///
+/// www.financializer.com/j/store.js
 ///
 if (typeof thsSiteTyp == 'undefined') {
 	thsSiteTyp = "news";
@@ -59,7 +59,11 @@ function epn_rover2newURL(url, campid) {
 }
 /// --- OFF: AUTO ON ----
 ///// MODDED FOR 
-function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
+
+// 2023-10-10 all manual AS off
+function asadRespId() {}
+
+function _asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
 		return;
 	}
@@ -930,7 +934,7 @@ $(window).on("load", function() {
 		}
 		// 
 		///// HNDLE BRKN IMGS - v2
-		// req: epnSrchURL()
+		// req: epnSrchURL , amzSrchURL, ga_evCatVal
 		$('.postbody a img').each(function(index) {
 			if (!this.complete || typeof this.naturalWidth == "undefined" || this.naturalWidth < 100) { // < 100 (ebay fallbck is 80px w) (default is 0 )
 				var imgSrc = $(this).attr('src') || '';
