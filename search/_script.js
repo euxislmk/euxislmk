@@ -11,6 +11,6 @@
  	// If the 'q' parameter exists and has a value
  	if (queryValue) {
  		// Prepend the unencoded value to the document title
- 		document.title = decodeURIComponent((queryValue.charAt(0).toUpperCase() + queryValue.slice(1))) + ' - ' + document.title;
+ 		document.title = decodeURIComponent(queryValue) + ' - ' + document.title;
  	}
  });
