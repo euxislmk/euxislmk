@@ -1,4 +1,5 @@
 /// news, www, financializer.com js (wip remove store. code)
+//// www.financializer.com/j/script.js
 ///
 ///
 if (typeof thsSiteTyp == 'undefined') {
@@ -58,7 +59,11 @@ function epn_rover2newURL(url, campid) {
 }
 /// --- OFF: AUTO ON ----
 ///// MODDED FOR 
-function asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
+
+/// 2023-10-10 all manual AS off
+function asadRespId( ) {}
+
+function _asadRespId(prefix, postfix, divId, idTxt, slot, channel, orient, divWidth, divHeight) {
 	if (bnndQry == "yes") {
 		return;
 	}
