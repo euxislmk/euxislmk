@@ -251,7 +251,7 @@ function multi_2TA1CH_HTML(stocksymbol) {
 
 	var a = '<div class="component">' +
 
-		'<div style="z-index:2; position:absolute;right:2px;top:2px;overflow:hidden;border:solid 1px #444;">' +
+		'<div class="component_wrap" style="opacity:0.7; z-index:2; position:absolute;right:2px;top:2px;overflow:hidden;border:solid 1px #444;">' +
 
 		scaled_componentHtml(stocksymbol, "mc", 200, 100, 0.8, "3M") +
 
