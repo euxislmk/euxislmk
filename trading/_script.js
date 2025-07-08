@@ -1,4 +1,4 @@
-// 
+// /trading/script.js
 
 // VARS 
 
@@ -321,7 +321,7 @@ function runSymbol() {
 
 	var stocksymbol = $('#exchange').text().trim() + ':' + $('#stockSymbol').val().trim();
 
-	// console.log(stocksymbol);
+	console.log(stocksymbol);
 
 	$('#components').empty();
 
@@ -366,7 +366,34 @@ function main_Form(func = "runSymbol") {
 	// var defaultExchange = localStorage.getItem('exchange') || 'TSX';
 	// var defaultSymbol = 'AC';
 
-	var htmlContent = '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
+	var htmlContent = 
+
+	`<form onsubmit="event.preventDefault(); ${func}();"> 
+    
+    <div style="max-width:200px;" class="input-group"> 
+        
+        <input type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="${defaultSymbol}"> 
+        
+        <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">${defaultExchange}</button> 
+
+        <ul class="dropdown-menu dropdown-menu-end">
+            ${ 
+
+            	exchanges.map(exchange => `
+
+            		<li><a class="dropdown-item" href="#" onclick="event.preventDefault();">${exchange}</a></li>
+
+            		`).join('')
+
+            }
+        </ul>
+
+    </div> 
+	</form>` ;
+
+
+
+	// '<form onsubmit="event.preventDefault(); ' + func + '();"> <div class="input-group"> <input style="" type="text" id="stockSymbol" placeholder="Enter Stock Symbol" class="form-control" value="' + defaultSymbol + '"> <button type="button" id="exchange" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">' + defaultExchange + '</button> <ul class="dropdown-menu dropdown-menu-end">' + (exchanges.map(exchange => '<li><a class="dropdown-item" href = "#" onclick="event.preventDefault();">' + exchange + '</a></li>').join('')) + '</ul> </div> </form>';
 
 	$('#lookup').prepend(htmlContent);
 
@@ -386,22 +413,20 @@ function templateHTML() {
 
 		<div id="header" class="container" style="margin:4px auto; outline:solid 4px #65bb70; max-width:99.9%; background:#65bb70">
 
-			<div class="row align-items-center" style="max-width:500px;">
+			<div class="row align-items-center">
 
-				<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+				<div id="logo" class="col col-2"><img style="max-width:65px" class="img-fluid" src="../img/logo_250.png" /></div>
 
 				<div id="title" class="col col-2"><h1 style="margin: 0; padding: 0; font:11px/1em sans-serif; color: white; line-height:1em;">${h1}</h1></div>
 				
-				<div id="lookup" class="col col-6"></div>
+				<div _style="width:auto" id="lookup" class="col col-4"></div>
 
-				<div id="menu" class="col col-2"></div>
+				<div id="menu" class="col col-4"></div>
 
 			</div>
 			<!-- #header -->
 
 		</div>
-
-
 
 		<div id="content" style="margin:10px auto;">
 			<div class="container" style="max-width:99.9%">
@@ -443,7 +468,11 @@ function menu() {
 
 		<style>#menu a {color:white;font-size:13px;}</style>
 
-		<a href="./multi.html">Multi</a>
+		<a href="./multi.html">Multi Compare</a>
+		&bull;  
+		<a href="./">Single</a>
+		 &bull;  
+		<a href="/search/ca/">Search</a>
 
 		`);
 

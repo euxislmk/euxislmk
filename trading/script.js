@@ -415,13 +415,13 @@ function templateHTML() {
 
 			<div class="row align-items-center">
 
-				<div id="logo" class="col col-2"><img class="img-fluid" src="../img/logo_250.png" /></div>
+				<div id="logo" class="col col-2"><img style="max-width:65px" class="img-fluid" src="../img/logo_250.png" /></div>
 
 				<div id="title" class="col col-2"><h1 style="margin: 0; padding: 0; font:11px/1em sans-serif; color: white; line-height:1em;">${h1}</h1></div>
 				
-				<div id="lookup" class="col col-6"></div>
+				<div _style="width:auto" id="lookup" class="col col-4"></div>
 
-				<div id="menu" class="col col-2"></div>
+				<div id="menu" class="col col-4"></div>
 
 			</div>
 			<!-- #header -->
@@ -469,6 +469,8 @@ function menu() {
 		<style>#menu a {color:white;font-size:13px;}</style>
 
 		<a href="./multi.html">Multi Compare</a>
+		&bull;  
+		<a href="./">Single</a>
 		 &bull;  
 		<a href="/search/ca/">Search</a>
 
