@@ -1,0 +1,11 @@
+/* post specific */
+
+body[data-url*="/2001/01/privacy-policy"] #jadeHeader,
+body[data-url*="/2001/01/privacy-policy"] #rightcol,
+body[data-url*="/2001/01/privacy-policy"] .pager,
+body[data-url*="/2001/01/privacy-policy"] footer,
+body[data-url*="/2001/01/privacy-policy"] #dummy {
+  display: none !important;
+}
+
+/* /post specific */
