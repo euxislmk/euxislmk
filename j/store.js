@@ -31,7 +31,10 @@ thsBlg_dyn_catcher = "www.financializer.com/c/";
 thsBlg_img_cdn = "www.financializer.com/img/";
 thsBlg_gasJsnPrx = "AKfycbxTy7YPX7Wq9tjYx3Ad2QjCdSAT3jnIkmmM0cz0D_e2ZPWrWM0";
 thsBlg_reportProductForm = "1FAIpQLSeDsL3kKlbghsmvQQUZEemR3wEH22nscf5uZlz7WOim-R1hfg";
-thsBlg_menulinks = [];
+thsBlg_menulinks = [
+	'<a style="text-align:center; background: #555; padding: 3px 5px; color: white; border-radius: 30px; text-decoration: none;" href="https://store.financializer.com/p/post.html"><b style="font-size:150%;line-height:100%">+</b> <span>POST YOUR PRODUCT</span></a>'
+
+];
 
 // -------- /FI ONLY VARS ---------
 
